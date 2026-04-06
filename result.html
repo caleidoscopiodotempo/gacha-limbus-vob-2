@@ -1,290 +1,143 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <title>Resultados</title>
-    <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<title>Resultados</title>
+<link rel="stylesheet" href="css/style.css">
 </head>
-
-
 <body class="result">
 
+<div class="circle-container" id="container"></div>
 
-    <div class="circle-container" id="container"></div>
+<div id="centerOrb">REVELAR TODOS</div>
 
+<div id="descricaoBox"></div>
 
-    <div id="centerOrb">REVELAR</div>
+<div id="filtro">
+    <button id="filtroTodos">Todos</button>
+    <button id="filtroRaros">Raros ★★★</button>
+    <button id="filtroComuns">Comuns ★★</button>
+    <button id="filtroLixo">Lixo ★</button>
+</div>
 
+<script src="js/gacha.js"></script>
 
-    <button id="backBtn">Voltar</button>
+<script>
+let resultados = JSON.parse(localStorage.getItem("pullResults")) || gerarPull(10);
+resultados = resultados.filter(res => res);
 
+const container = document.getElementById("container");
+const descricaoBox = document.getElementById("descricaoBox");
+const descricoesMostradas = new Set();
+const historico = [];
 
-    <div id="descricaoBox"></div>
+// função para criar orb sem revelar
+function criarOrb(res, index) {
+    const orb = document.createElement("div");
+    orb.classList.add("orb");
+    orb.dataset.index = index;
+    orb.style.left = "50%";
+    orb.style.top = "50%";
+    orb.style.transform = "translate(-50%, -50%)";
+    container.appendChild(orb);
+}
 
+// cria todas as orbs inicialmente
+resultados.forEach((res, i) => criarOrb(res, i));
 
-    <div id="resultadoFinal"></div>
+// mostrar resultados um por um
+function revelarSequencial() {
+    const orbs = document.querySelectorAll(".orb");
+    let i = 0;
 
+    function revelarProximo() {
+        if (i >= orbs.length) return;
+        const orb = orbs[i];
+        const res = resultados[i];
 
-    <script src="js/gacha.js"></script>
+        orb.innerText = "...";
 
-
-    <script>
-        let resultados = JSON.parse(localStorage.getItem("pullResults"));
-
-
-        if (!resultados || resultados.length === 0) {
-            resultados = gerarPull(10);
+        if (res.raridade === 3) {
+            mostrarEventoRaro(res, () => finalizarReveal(orb, res, () => {
+                historico.push(res);
+                i++;
+                setTimeout(revelarProximo, 300);
+            }));
+        } else {
+            setTimeout(() => finalizarReveal(orb, res, () => {
+                historico.push(res);
+                i++;
+                setTimeout(revelarProximo, 300);
+            }), 400);
         }
-
-
-        resultados = resultados.filter(res => res);
-
-
-        const container = document.getElementById("container");
-        const descricaoBox = document.getElementById("descricaoBox");
-
-
-        const radius = 180;
-        const descricoesMostradas = new Set();
-
-
-        let abertas = 0;
-
-
-        const filaDescricoes = [];
-        let mostrandoDescricao = false;
-
-
-        resultados.forEach((res, i) => {
-
-
-            const angle = (i / resultados.length) * (2 * Math.PI);
-            const x = Math.cos(angle) * radius;
-            const y = Math.sin(angle) * radius;
-
-
-            const distance = Math.sqrt(x * x + y * y);
-            const angleDeg = Math.atan2(y, x) * (180 / Math.PI);
-
-
-            const line = document.createElement("div");
-            line.classList.add("chain");
-            line.style.width = `${distance}px`;
-            line.style.left = "50%";
-            line.style.top = "50%";
-            line.style.transform = `translate(-50%, -50%) rotate(${angleDeg}deg)`;
-            container.appendChild(line);
-
-
-            const orb = document.createElement("div");
-            orb.classList.add("orb");
-
-
-            orb.dataset.index = i;
-
-
-            orb.style.left = "50%";
-            orb.style.top = "50%";
-            orb.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
-
-
-            orb.onclick = () => revelarOrb(orb, res);
-
-
-            container.appendChild(orb);
-        });
-
-
-        function revelarOrb(orb, res) {
-
-
-            if (!res) return;
-
-
-            if (orb.classList.contains("opened")) return;
-            orb.classList.add("opened");
-
-
-            orb.style.transition = "transform 0.4s";
-            orb.style.transform = "translate(-50%, -50%)";
-
-
-            setTimeout(() => {
-
-
-                orb.innerText = "...";
-
-
-                if (res.raridade === 3) {
-                    mostrarEventoRaro(res, () => finalizarReveal(orb, res));
-                } else {
-                    setTimeout(() => finalizarReveal(orb, res), 300);
-                }
-
-
-            }, 400);
-        }
-
-
-        function finalizarReveal(orb, res) {
-            orb.innerText = res.nome;
-
-
-            if (res.raridade === 3) {
-                orb.style.background = "gold";
-                orb.style.color = "black";
-            }
-            else if (res.raridade === 2) {
-                orb.style.background = "lightblue";
-                orb.style.color = "black";
-            }
-            else {
-                orb.style.background = "#555";
-            }
-
-
-            if (!descricoesMostradas.has(res.nome)) {
-                mostrarDescricao(`${res.nome} — ${res.descricao}`);
-                descricoesMostradas.add(res.nome);
-            }
-
-
-            setTimeout(() => {
-                orb.style.transition = "opacity 0.5s";
-                orb.style.opacity = "0";
-
-
-                setTimeout(() => {
-                    orb.remove();
-                }, 500);
-            }, 300);
-
-
-            abertas++;
-
-
-            if (abertas === resultados.length) {
-                setTimeout(() => {
-                    mostrarResultadosFinais();
-                }, 500);
-            }
-        }
-
-
-        function mostrarDescricao(texto) {
-
-
-            filaDescricoes.push(texto);
-
-
-            if (!mostrandoDescricao) {
-                processarFila();
-            }
-        }
-
-
-        function processarFila() {
-
-
-            if (filaDescricoes.length === 0) {
-                mostrandoDescricao = false;
-                return;
-            }
-
-
-            mostrandoDescricao = true;
-
-
-            const texto = filaDescricoes.shift();
-
-
-            descricaoBox.innerText = texto;
-
-
-            descricaoBox.classList.remove("fade");
-            void descricaoBox.offsetWidth;
-            descricaoBox.classList.add("fade");
-
-
-            setTimeout(() => {
-                processarFila();
-            }, 2500);
-        }
-
-
-        function mostrarEventoRaro(res, callback) {
-
-
-            const overlay = document.createElement("div");
-            overlay.classList.add("rareOverlay");
-
-
-            overlay.innerText = `${res.nome}\n\n${res.descricao}`;
-
-
-            document.body.appendChild(overlay);
-
-
-            setTimeout(() => {
-                overlay.classList.add("fadeOut");
-
-
-                setTimeout(() => {
-                    overlay.remove();
-                    callback();
-                }, 800);
-
-
-            }, 1500);
-        }
-
-
-        function mostrarResultadosFinais() {
-            const box = document.getElementById("resultadoFinal");
-
-
-            const contagem = {};
-
-
-            resultados.forEach(r => {
-                contagem[r.nome] = (contagem[r.nome] || 0) + 1;
-            });
-
-
-            let texto = "Resultado:\n";
-
-
-            for (let nome in contagem) {
-                texto += `${nome} x${contagem[nome]}\n`;
-            }
-
-
-            box.innerText = texto;
-            box.style.opacity = "1";
-            box.classList.add("fade");
-        }
-
-
-        document.getElementById("centerOrb").onclick = () => {
-            const orbs = document.querySelectorAll(".orb");
-
-
-            orbs.forEach((orb, i) => {
-                setTimeout(() => {
-                    const index = orb.dataset.index;
-                    revelarOrb(orb, resultados[index]);
-                }, i * 200);
-            });
-        };
-
-
-        document.getElementById("backBtn").onclick = () => {
-            window.location.href = "index.html";
-        };
-    </script>
-
-
+    }
+
+    revelarProximo();
+}
+
+function finalizarReveal(orb, res, callback) {
+    orb.innerText = res.nome;
+    if (res.raridade === 3) {
+        orb.style.background = "gold";
+        orb.style.color = "black";
+    } else if (res.raridade === 2) {
+        orb.style.background = "lightblue";
+        orb.style.color = "black";
+    } else {
+        orb.style.background = "#555";
+        orb.style.color = "white";
+    }
+
+    if (!descricoesMostradas.has(res.nome)) {
+        mostrarDescricao(`${res.nome} — ${res.descricao}`);
+        descricoesMostradas.add(res.nome);
+    }
+
+    setTimeout(() => {
+        orb.style.transition = "opacity 0.5s";
+        orb.style.opacity = 0;
+        setTimeout(() => {
+            orb.remove();
+            if (callback) callback();
+        }, 500);
+    }, 500);
+}
+
+function mostrarDescricao(texto) {
+    descricaoBox.innerText = texto;
+    descricaoBox.classList.remove("fade");
+    void descricaoBox.offsetWidth;
+    descricaoBox.classList.add("fade");
+}
+
+function mostrarEventoRaro(res, callback) {
+    const overlay = document.createElement("div");
+    overlay.classList.add("rareOverlay");
+    overlay.innerText = `${res.nome}\n\n${res.descricao}`;
+    document.body.appendChild(overlay);
+
+    setTimeout(() => {
+        overlay.classList.add("fadeOut");
+        setTimeout(() => {
+            overlay.remove();
+            if (callback) callback();
+        }, 800);
+    }, 1500);
+}
+
+document.getElementById("centerOrb").addEventListener("click", revelarSequencial);
+
+document.getElementById("filtroTodos").onclick = () => atualizarFiltro(null);
+document.getElementById("filtroRaros").onclick = () => atualizarFiltro(3);
+document.getElementById("filtroComuns").onclick = () => atualizarFiltro(2);
+document.getElementById("filtroLixo").onclick = () => atualizarFiltro(1);
+
+function atualizarFiltro(raridade) {
+    container.innerHTML = "";
+    resultados.forEach((res, i) => {
+        if (!raridade || res.raridade === raridade) criarOrb(res, i);
+    });
+}
+</script>
 </body>
 </html>
-
-
