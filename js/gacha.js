@@ -2,75 +2,103 @@ function gerarPull(qtd) {
 
 
     const pool = [
-{
-    nome: "Kurokumo Junior Doujima Shun",
+
+        {
+    nome: "Jiheisen Office Fixer Laura",
     raridade: 1,
-    descricao: "Disciplina. Silêncio. Repetição. Ainda não é o bastante... mas chegará lá. Precisa chegar."
-},
+    descricao: "É um prazer conhecer você! Pode me chamar de Laura, vamos estar trabalhando juntas daqui em diante?~"
+       },
 
+                {
+    nome: "Jiheisen Office Fixer Jonas & Lucas",
+    raridade: 1,
+    descricao: "...Prazer. Pode me chamar de Jonas. Por favor, não se incomode comigo."
+       },
 
+                {
+    nome: "Jiheisen Office Fixer Shiki Tohno",
+    raridade: 1,
+    descricao: "Meu nome? Ah, é Tohno Shiki. Não vou te decepcionar."
+       },
+
+                {
+    nome: "Jiheisen Office Fixer Doujima Shun",
+    raridade: 1,
+    descricao: "Doujima Shun. Se refira a mim com este nome."
+       },
+
+                        {
+    nome: "Jiheisen Office Fixer Aramis, Athos & Porthos",
+    raridade: 1,
+    descricao: "Aramis, Athos, Porthos & D'artagnan! Fique tranquilo, você não irá esquecer dele."
+       },
+
+                             {
+    nome: "Jiheisen Office Fixer Loreto",
+    raridade: 1,
+    descricao: "O..Olá, por favor, m-me chame de Loreto...E-Eu tenho um nome um pouco mais longo, mas ele torna as coisas..desagradáveis, então me chame só de Loreto."
+       }, 
+
+                      {
+    nome: "Jiheisen Office Fixer Aegis",
+    raridade: 1,
+    descricao: "Aegis."
+       },
+        
 {
-    nome: "Section 6 Intern Doujima Shun",
+    nome: "Kurokumo Wakashu Doujima Shun",
     raridade: 2,
-    descricao: "Não faço perguntas desnecessárias. Apenas sigo instruções."
+    descricao: "Disciplina. Silêncio. Repetição. Ainda não é o bastante... mas chegará lá. Precisa chegar. Ah? Não. Eu estava falando sozinho. Não fale comigo."
 },
 
 
 {
-    nome: "Blade Lineage Executor Shiki Tohno",
+    nome: "Blade Lineage Salsu Shiki Tohno",
     raridade: 3,
-    descricao: "Uma lâmina não hesita. Uma lâmina não tem voz. Uma lâmina só precisa ser capaz de refletir seu alvo uma última vez."
+    descricao: "Uma lâmina não hesita. Uma lâmina não tem voz. Sim, eu sei. Não é somente a lâmina que precisa destas qualidades, Mestre."
 },
 
 
 {
     nome: "Seven Assoc. South Section Aramis, Athos & Porthos",
     raridade: 1,
-    descricao: "Um sorriso, uma piada... e talvez algo mais. Depende do quanto você pagar."
+    descricao: "Um sorriso, uma piada... e talvez algo mais. Depende do quanto você pagar, docinho. Só me dê os detalhes."
 },
 
 
 {
     nome: "Cinq Assoc. South Section Aramis, Athos & Porthos",
     raridade: 2,
-    descricao: "O espetáculo continua. Sempre continua. Mesmo quando ninguém está assistindo."
+    descricao: "O espetáculo vai continuar. Sempre continua. Mesmo quando ninguém está assistindo."
 },
 
 
 {
     nome: "Zwei Association South Section 6 Doujima Shun",
     raridade: 1,
-    descricao: "Postura firme. Proteção básica. Ainda há muito a aprender."
+    descricao: "Postura firme. Proteção básica. Ainda há muito a aprender- Oi, Aramis! Você está me escutando?!"
 },
-
-
-{
-    nome: "Zwei Association South Section 3 Doujima Shun",
-    raridade: 2,
-    descricao: "Defesa antes de tudo. Manter a linha de frente é prioridade. Não me dirija a palavra."
-},
-
 
 
 
 {
     nome: "Shi Association South Section 5 Aramis, Athos & Porthos",
     raridade: 1,
-    descricao: "Contratos simples, riscos simples. Ou pelo menos deveriam ser.~"
+    descricao: "Contratos simples, riscos simples. Ou pelo menos deveriam ser, você pode parar de complicar tudo? Eu estou ocupado!"
 },
 
 
 {
-    nome: "Lobotomy Corporation Employee Jonas & Lucas",
+    nome: "Lobotomy E.G.O Frost Splinter Jonas/Lucas",
     raridade: 1,
-    descricao: "Mais um dia de trabalho. Nada fora do comum... O Lucas esqueceu meu caderno no Departamento de Segurança de novo???"
+    descricao: "Haaah.. Mais um dia de trabalho. Minhas mãos estão doendo. Nada fora do comum-... O Lucas esqueceu meu caderno no Departamento de Segurança de novo???"
 },
 
 
 {
-    nome: "Lobotomy Corporation Control Team Shiki Tohno",
+    nome: "Lobotomy E.G.O Cherry Blossoms Shiki",
     raridade: 2,
-    descricao: "Monitoramento constante. Tudo parece... sob controle."
+    descricao: "Monitoramento constante. Tudo parece... sob controle. Obrigado pelo seu serviço, como sempre."
 },
 
 
@@ -81,21 +109,10 @@ function gerarPull(qtd) {
 },
 
 
-
-
-
-
-{
-    nome: "Liu Association South Section 3 Laura",
-    raridade: 2,
-    descricao: "Chamas controladas... Emoções também deveriam ser. Não concorda?"
-},
-
-
 {
     nome: "R Corp 4th Pack Reindeer Aegis",
     raridade: 2,
-    descricao: "Eficiência otimizada. Execução direta."
+    descricao: "Hippity Hop. Eficiência otimizada. Execução direta. Com pulinhos. Ou algo assim."
 },
 
 
