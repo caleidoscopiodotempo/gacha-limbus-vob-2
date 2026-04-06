@@ -4,43 +4,43 @@ function gerarPull(qtd) {
     const pool = [
 
         {
-    nome: "Jiheisen Office Fixer Laura",
+    nome: "Jiheisen Co. Fixer Laura",
     raridade: 1,
     descricao: "É um prazer conhecer você! Pode me chamar de Laura, vamos estar trabalhando juntas daqui em diante?~"
        },
 
                 {
-    nome: "Jiheisen Office Fixer Jonas & Lucas",
+    nome: "Jiheisen Co. Fixer Jonas & Lucas",
     raridade: 1,
     descricao: "...Prazer. Pode me chamar de Jonas. Por favor, não se incomode comigo."
        },
 
                 {
-    nome: "Jiheisen Office Fixer Shiki Tohno",
+    nome: "Jiheisen Co. Fixer Shiki Tohno",
     raridade: 1,
     descricao: "Meu nome? Ah, é Tohno Shiki. Não vou te decepcionar."
        },
 
                 {
-    nome: "Jiheisen Office Fixer Doujima Shun",
+    nome: "Jiheisen Co. Fixer Doujima Shun",
     raridade: 1,
     descricao: "Doujima Shun. Se refira a mim com este nome."
        },
 
                         {
-    nome: "Jiheisen Office Fixer Aramis, Athos & Porthos",
+    nome: "Jiheisen Co. Fixer Aramis, Athos & Porthos",
     raridade: 1,
     descricao: "Aramis, Athos, Porthos & D'artagnan! Fique tranquilo, você não irá esquecer dele."
        },
 
                              {
-    nome: "Jiheisen Office Fixer Loreto",
+    nome: "Jiheisen Co. Fixer Loreto",
     raridade: 1,
     descricao: "O..Olá, por favor, m-me chame de Loreto...E-Eu tenho um nome um pouco mais longo, mas ele torna as coisas..desagradáveis, então me chame só de Loreto."
        }, 
 
                       {
-    nome: "Jiheisen Office Fixer Aegis",
+    nome: "Jiheisen Co. Fixer Aegis",
     raridade: 1,
     descricao: "Aegis."
        },
@@ -78,7 +78,6 @@ function gerarPull(qtd) {
     raridade: 1,
     descricao: "Postura firme. Proteção básica. Ainda há muito a aprender- Oi, Aramis! Você está me escutando?!"
 },
-
 
 
 {
@@ -137,22 +136,29 @@ function gerarPull(qtd) {
 },
 
 
-    ]
+function gerarPull(qtd) {
     const resultados = [];
-
 
     for (let i = 0; i < qtd; i++) {
         let roll = Math.random();
+        let item;
 
+        if (roll < 0.05) {
 
-        if (roll < 0.05)
-            resultados.push(pool[0]);
-        else if (roll < 0.30)
-            resultados.push(pool[1]);
-        else
-            resultados.push(pool[2]);
+            const raros = pool.filter(p => p.raridade === 3);
+            item = raros[Math.floor(Math.random() * raros.length)];
+        } else if (roll < 0.30) {
+
+            const comuns = pool.filter(p => p.raridade === 2);
+            item = comuns[Math.floor(Math.random() * comuns.length)];
+        } else {
+
+            const basico = pool.filter(p => p.raridade === 1);
+            item = basico[Math.floor(Math.random() * basico.length)];
+        }
+
+        resultados.push(item);
     }
-
 
     return resultados;
 }
