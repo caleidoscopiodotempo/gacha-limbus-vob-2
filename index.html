@@ -6,6 +6,35 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 
+    <style>
+    #bongy-container {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 100;
+    }
+
+    #bongy-img {
+        width: 100px;
+        cursor: pointer;
+    }
+
+    .bongy-jump {
+        animation: bongyJump 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes bongyJump {
+        0% { transform: scale(1, 1) translateY(0); }
+        30% { transform: scale(1.2, 0.8) translateY(0); }
+        60% { transform: scale(0.9, 1.1) translateY(-30px); }
+        100% { transform: scale(1, 1) translateY(0); }
+    }
+</style>
+
+<div id="bongy-container">
+    <img src="img/bongy.png" id="bongy-img" alt="Bongy" onclick="bongyFarm()">
+</div>
 
 <body class="banner">
 
