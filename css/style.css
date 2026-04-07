@@ -203,3 +203,83 @@ button {
     opacity: 0;
 }
 
+#final-screen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    display: none; 
+    flex-direction: column;
+    align-items: center;
+    padding-top: 50px;
+    z-index: 200;
+    overflow-y: auto;
+    animation: fadeIn 1s ease;
+}
+
+.results-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 90%;
+    max-width: 800px;
+    padding-bottom: 50px;
+}
+
+.id-card {
+    display: flex;
+    align-items: center;
+    padding: 15px 25px;
+    border-radius: 4px;
+    border-left: 8px solid;
+    font-family: 'monospace', sans-serif;
+    transition: transform 0.2s;
+}
+
+.id-card:hover { transform: scale(1.02); }
+
+.card-r1 { 
+    background: linear-gradient(90deg, #3e2723 0%, #1a1a1a 100%);
+    border-color: #5d4037;
+    color: #d7ccc8;
+}
+
+.card-r2 { 
+    background: linear-gradient(90deg, #7f0000 0%, #1a1a1a 100%);
+    border-color: #b71c1c;
+    color: #ffcdd2;
+}
+
+.card-r3 { 
+    background: linear-gradient(90deg, #b8860b 0%, #1a1a1a 100%);
+    border-color: #ffd700;
+    color: #fff;
+    box-shadow: inset 0 0 15px rgba(255, 215, 0, 0.2);
+}
+
+.card-rarity-label {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-right: 20px;
+    min-width: 50px;
+}
+
+.card-name-label {
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#btn-fechar-final {
+    margin-top: 20px;
+    padding: 15px 40px;
+    background: none;
+    border: 1px solid #fff;
+    color: #fff;
+    cursor: pointer;
+    text-transform: uppercase;
+    margin-bottom: 50px;
+}
+
