@@ -1,4 +1,3 @@
-
 const pool = [
     {
         nome: "Jiheisen Co. Fixer Laura",
@@ -38,7 +37,7 @@ const pool = [
     {
         nome: "Kurokumo Wakashu Doujima Shun",
         raridade: 2,
-        descricao: "Disciplina. Silêncio. Repetição. Ainda não é o bastante... mas chegará lá. Precisa chegar. Ah? Não. Eu estava falando sozinho. Não fale comigo."
+        descricao: "Disciplina. Silêncio. Repetição. Ainda não é o bastante... mas chegará lá. Precisa chegar. Ah? No. Eu estava falando sozinho. Não fale comigo."
     },
     {
         nome: "Blade Lineage Salsu Shiki Tohno",
@@ -75,13 +74,11 @@ const pool = [
         raridade: 2,
         descricao: "Monitoramento constante. Tudo parece... sob controle. Obrigado pelo seu serviço, como sempre."
     },
-
-        {
+    {
         nome: "Lobotomy E.G.O Beak Aegis",
         raridade: 2,
         descricao: "Se limpar de todo pecado parece meio absurdo. Mas tudo certo. Desde que você se alimente- Ah, acho que se confundiu. Minha cabeça não é um galho."
     },
-    
     {
         nome: "Kurokumo Clan Captain Laura",
         raridade: 3,
@@ -107,24 +104,21 @@ const pool = [
         raridade: 3,
         descricao: "—Você fala.\n—Eu resolvo~.\n—Simples assim. Se você me atrapalhar outra vez, vai torcer para que eu não te encontre."
     },
-
-{ 
-          nome: "The Echoes' Heir Loreto", 
-          raridade: 3, 
-          descricao: "O que há? Vamos, a música está doce e a noite é jovem. Deixe-se levar pela melodia e dance sob meu palco, o show está prestes a começar afinal de contas!"
-},
-{ 
-          nome: "Chief Butler Aegis", 
-          raridade: 3, 
-          descricao: "Os corredores estão limpos. A mesa está posta. As roupas estão passadas. Sob a \"bagunça\" que fez, senhor Raskolnikov... Eu logo irei cuidar dela." 
-},
-{ 
-          nome: "District 25 Chief Detective Laura", 
-          raridade: 3, 
-          descricao: "Aah, bem-vindo ao meu escritório! Se você está aqui, deve ser porque algo horrível te aconteceu. Não se preocupe, eu vou cuidar de tudo, você só vai precisar descansar um pouco e me contar tudo. Eu vou cuidar do resto, eu prometo.~" 
-}
-    
-
+    { 
+        nome: "The Echoes' Heir Loreto", 
+        raridade: 3, 
+        descricao: "O que há? Vamos, a música está doce e a noite é jovem. Deixe-se levar pela melodia e dance sob meu palco, o show está prestes a começar afinal de contas!"
+    },
+    { 
+        nome: "Chief Butler Aegis", 
+        raridade: 3, 
+        descricao: "Os corredores estão limpos. A mesa está posta. As roupas estão passadas. Sob a \"bagunça\" que fez, senhor Raskolnikov... Eu logo irei cuidar dela." 
+    },
+    { 
+        nome: "District 25 Chief Detective Laura", 
+        raridade: 3, 
+        descricao: "Aah, bem-vindo ao meu escritório! Se você está aqui, deve ser porque algo horrível te aconteceu. Não se preocupe, eu vou cuidar de tudo, você só vai precisar descansar um pouco e me contar tudo. Eu vou cuidar do resto, eu prometo.~" 
+    }
 ];
 
 function gerarPull(qtd) {
@@ -144,6 +138,12 @@ function gerarPull(qtd) {
         } else {
             selecionado = r1[Math.floor(Math.random() * r1.length)];
         }
+
+        if (!selecionado) selecionado = pool[0];
+        resultados.push(selecionado);
+    }
+    return resultados;
+}
 
         if (!selecionado) selecionado = pool[0];
         resultados.push(selecionado);
