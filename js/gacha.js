@@ -82,7 +82,7 @@ const pool = [
     {
 
         nome: "Shi Association South Section 5  Aramis, Athos & Porthos",
-        raridade: 2,
+        raridade: 3,
         descricao: "Bom...! O espetáculo vai continuar. Sempre continua. Mesmo quando ninguém está me assistindo."
 
     },
@@ -138,7 +138,7 @@ const pool = [
     {
 
         nome: "R Corp 4th Pack Rabbit Aegis",
-        raridade: 2,
+        raridade: 3,
         descricao: "Hippity hop. Eficiência otimizada. Execução direta. Com pulinhos. Hippity hop. Ou algo assim."
 
     },
