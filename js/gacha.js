@@ -1,3 +1,5 @@
+console.log("Arquivo gacha.js carregado com sucesso!");
+
 const pool = [
     {
         nome: "Jiheisen Co. Fixer Laura",
@@ -87,7 +89,7 @@ const pool = [
     {
         nome: "Seven Association South Section 1 Loreto",
         raridade: 3,
-        descricao: "A verdade está sempre lá, não está...? Basta saber onde olhar.. haah... Isso is algo que você diria."
+        descricao: "A verdade está sempre lá, não está...? Basta saber onde olhar.. haah... Isso é algo que você diria."
     },
     {
         nome: "Tingtang Gang Member Jonas & Lucas",
@@ -103,7 +105,6 @@ const pool = [
 
 function gerarPull(qtd) {
     const resultados = [];
-    
     const r3 = pool.filter(p => p.raridade === 3);
     const r2 = pool.filter(p => p.raridade === 2);
     const r1 = pool.filter(p => p.raridade === 1);
@@ -114,24 +115,14 @@ function gerarPull(qtd) {
 
         if (roll < 0.05 && r3.length > 0) {
             selecionado = r3[Math.floor(Math.random() * r3.length)];
-        } 
-        else if (roll < 0.30 && r2.length > 0) {
+        } else if (roll < 0.30 && r2.length > 0) {
             selecionado = r2[Math.floor(Math.random() * r2.length)];
-        } 
-        else {
+        } else {
             selecionado = r1[Math.floor(Math.random() * r1.length)];
         }
 
         if (!selecionado) selecionado = pool[0];
-
         resultados.push(selecionado);
     }
-
-    return resultados;
-}
-        resultados.push(selecionado);
-    }
-
-    console.log("Pull gerada com sucesso:", resultados);
     return resultados;
 }
