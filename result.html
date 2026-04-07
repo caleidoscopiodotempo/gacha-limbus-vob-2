@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>gacha pulls</title>
+    <title>Gacha Results - Extraction Report</title>
     <style>
         body {
             background-color: #0a0a0a;
@@ -64,8 +64,8 @@
         }
 
         .center-trigger {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             background: radial-gradient(circle, #333 0%, #111 100%);
             border: 2px dashed #555;
             border-radius: 50%;
@@ -76,7 +76,6 @@
             z-index: 15;
             transition: 0.3s;
             color: #666;
-            font-size: 0.8rem;
             text-align: center;
             padding: 10px;
         }
@@ -105,98 +104,91 @@
             z-index: 10;
         }
 
+        .orb.opened { transform: scale(1.1); }
         .orb.raridade-1 { background: #5D4037; border-color: #3E2723; color: #D7CCC8; box-shadow: 0 0 15px #5D4037; }
         .orb.raridade-2 { background: #B71C1C; border-color: #7F0000; color: #FFCDD2; box-shadow: 0 0 20px #B71C1C; }
         .orb.raridade-3 { background: #FFD700; border-color: #B8860B; color: #000; box-shadow: 0 0 30px #FFD700; }
 
-        .controles-inferiores {
-            position: absolute;
-            bottom: 40px;
-        }
-
-        button.nav-btn {
-            background: none;
-            border: 1px solid #444;
-            color: #666;
-            padding: 10px 20px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button.nav-btn:hover { color: #fff; border-color: #fff; }
-
-        #resultadoFinal {
-            position: absolute;
-            right: 30px;
-            top: 100px;
-            width: 220px;
-            max-height: 70vh;
-            overflow-y: auto;
-            font-size: 0.85rem;
-            opacity: 0.6;
-        }
-
-        .item-clicavel {
-            padding: 8px;
-            cursor: pointer;
-            border-bottom: 1px solid #222;
-        }
-
-        .item-clicavel:hover { color: gold; background: #111; }
-
         #special-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
             background: radial-gradient(circle, rgba(255,215,0,0.2) 0%, rgba(0,0,0,0.95) 100%);
             display: none; 
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 100;
+            z-index: 1000;
             text-align: center;
-            transition: opacity 0.8s ease;
-            animation: fadeInGold 0.8s ease-out;
             cursor: pointer;
         }
 
-        <div id="final-screen-overlay">
-    <h2 style="letter-spacing: 5px; color: #666;">RELATÓRIO DE EXTRAÇÃO</h2>
-    <div class="results-grid" id="final-grid">
-        </div>
-    <button id="btn-fechar-final" onclick="location.reload()">NOVA EXTRAÇÃO</button>
-</div>
-
-        @keyframes fadeInGold {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        #final-screen-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.98);
+            display: none; 
+            flex-direction: column;
+            align-items: center;
+            padding-top: 50px;
+            z-index: 2000;
+            overflow-y: auto;
         }
 
-        #overlay-nome {
-            font-size: 3rem;
-            color: #FFD700;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
-            margin-bottom: 20px;
-            text-transform: uppercase;
-        }
-
-        #overlay-texto {
-            font-size: 1.5rem;
-            color: #fff;
+        .results-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 90%;
             max-width: 800px;
-            font-style: italic;
-            line-height: 1.6;
-            padding: 0 20px;
+            margin-top: 30px;
+        }
+
+        .id-card {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            border-left: 8px solid;
+            background: #111;
+            font-family: 'Courier New', Courier, monospace;
+            animation: slideIn 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .card-r1 { border-color: #5d4037; background: linear-gradient(90deg, #2b1d1a 0%, #000 100%); color: #d7ccc8; }
+        .card-r2 { border-color: #b71c1c; background: linear-gradient(90deg, #4a0000 0%, #000 100%); color: #ffcdd2; }
+        .card-r3 { border-color: #ffd700; background: linear-gradient(90deg, #4d3d00 0%, #000 100%); color: #fff; }
+
+        .card-rarity-label { font-weight: bold; font-size: 1.3rem; margin-right: 30px; width: 50px; }
+        
+        #btn-fechar-final {
+            margin: 40px 0;
+            padding: 15px 50px;
+            background: #222;
+            border: 1px solid #555;
+            color: white;
+            cursor: pointer;
+            letter-spacing: 2px;
         }
     </style>
 </head>
 <body>
 
     <div id="special-overlay">
-        <div id="overlay-nome"></div>
-        <div id="overlay-texto"></div>
+        <div id="overlay-nome" style="font-size: 3.5rem; color: gold; text-shadow: 0 0 20px gold;"></div>
+        <div id="overlay-texto" style="font-size: 1.5rem; font-style: italic; max-width: 800px;"></div>
+    </div>
+
+    <div id="final-screen-overlay">
+        <h2 style="letter-spacing: 8px; color: #444;">RECOVERY LOG COMPLETE</h2>
+        <div class="results-grid" id="final-grid"></div>
+        <button id="btn-fechar-final" onclick="window.location.href='index.html'">RETORNAR AO PAINEL</button>
     </div>
 
     <div id="gacha-container">
@@ -206,18 +198,10 @@
         </div>
 
         <div class="circle-container">
-            <div class="center-trigger" id="centerOrb">(revelar correntes)</div>
+            <div class="center-trigger" id="centerOrb">INICIAR<br>PROTOCOLO</div>
             <div id="orbsWrapper"></div>
         </div>
-
-        <div id="resultadoFinal"></div>
-
-        <div class="controles-inferiores">
-            <button class="nav-btn" onclick="window.location.href='index.html'">voltar</button>
-        </div>
     </div>
-
-    <script src="js/gacha.js"></script>
 
     <script>
         const resultados = JSON.parse(localStorage.getItem("pullResults")) || [];
@@ -225,21 +209,19 @@
         const descricaoBox = document.getElementById("descricaoBox");
         const nomeIdTxt = document.getElementById("id-nome");
         const corpoTextoTxt = document.getElementById("id-texto");
-        const resFinalBox = document.getElementById("resultadoFinal");
         
         let filaResultados = [];
         let mostrandoDescricao = false;
+        let timeoutDestaque;
 
-        const totalOrbs = resultados.length;
-        const radius = 180; 
-
+        const radius = 190;
         resultados.forEach((res, index) => {
             const orb = document.createElement("div");
             orb.className = "orb";
             orb.dataset.index = index;
             orb.innerText = "?";
             
-            const angle = (index / totalOrbs) * (Math.PI * 2);
+            const angle = (index / resultados.length) * (Math.PI * 2);
             const x = Math.cos(angle) * radius;
             const y = Math.sin(angle) * radius;
             
@@ -255,7 +237,7 @@
             elemento.classList.add("opened");
             
             let rotulo = personagem.raridade === 3 ? "000" : (personagem.raridade === 2 ? "00" : "0");
-            let classe = personagem.raridade === 3 ? "raridade-3" : (personagem.raridade === 2 ? "raridade-2" : "raridade-1");
+            let classe = `raridade-${personagem.raridade}`;
             
             elemento.classList.add(classe);
             elemento.innerText = rotulo;
@@ -267,35 +249,26 @@
                 if (!mostrandoDescricao) processarProximaFrase();
             }
 
-            if (document.querySelectorAll(".opened").length === resultados.length) montarListaFinal();
+            if (document.querySelectorAll(".opened").length === resultados.length) {
+                setTimeout(montarListaFinal, 2000);
+            }
         }
-let timeoutDestaque; 
-        
+
         function exibirDestaqueDourado(p) {
             const overlay = document.getElementById("special-overlay");
-            const oNome = document.getElementById("overlay-nome");
-            const oTexto = document.getElementById("overlay-texto");
-
-            oNome.innerText = p.nome;
-            oTexto.innerText = p.descricao;
+            document.getElementById("overlay-nome").innerText = p.nome;
+            document.getElementById("overlay-texto").innerText = p.descricao;
             overlay.style.display = "flex";
-            overlay.style.opacity = "1";
 
-            const fecharDestaque = () => { 
+            const fechar = () => {
                 clearTimeout(timeoutDestaque);
-                overlay.style.opacity = "0";
-
-                setTimeout(() => {
-                    overlay.style.display = "none";
-                    overlay.onclick = null;
-                    
-                    filaResultados.push(p);
-                    if (!mostrandoDescricao) processarProximaFrase();
-                }, 800);
+                overlay.style.display = "none";
+                filaResultados.push(p);
+                if (!mostrandoDescricao) processarProximaFrase();
             };
 
-            overlay.onclick = fecharDestaque;
-            timeoutDestaque = setTimeout(fecharDestaque, 8000);
+            overlay.onclick = fechar;
+            timeoutDestaque = setTimeout(fechar, 8000);
         }
 
         function processarProximaFrase() {
@@ -303,59 +276,49 @@ let timeoutDestaque;
                 mostrandoDescricao = false;
                 return;
             }
-
             mostrandoDescricao = true;
+            const p = filaResultados.shift();
+            
             descricaoBox.style.opacity = 0;
-
             setTimeout(() => {
-                const p = filaResultados.shift();
                 nomeIdTxt.innerText = p.nome;
                 corpoTextoTxt.innerText = p.descricao;
                 descricaoBox.style.opacity = 1;
-                
-                setTimeout(processarProximaFrase, 5000);
+                setTimeout(processarProximaFrase, 4000);
             }, 500);
+        }
+
+        function montarListaFinal() {
+            const finalOverlay = document.getElementById("final-screen-overlay");
+            const grid = document.getElementById("final-grid");
+            grid.innerHTML = "";
+
+            resultados.forEach((res, i) => {
+                const card = document.createElement("div");
+                let rClass = res.raridade === 3 ? "card-r3" : (res.raridade === 2 ? "card-r2" : "card-r1");
+                let rLabel = res.raridade === 3 ? "000" : (res.raridade === 2 ? "00" : "0");
+
+                card.className = `id-card ${rClass}`;
+                card.style.animationDelay = `${i * 0.15}s`;
+                card.innerHTML = `
+                    <span class="card-rarity-label">${rLabel}</span>
+                    <span class="card-name-label">${res.nome}</span>
+                `;
+                grid.appendChild(card);
+            });
+            finalOverlay.style.display = "flex";
         }
 
         document.getElementById("centerOrb").onclick = function() {
             const todas = document.querySelectorAll(".orb:not(.opened)");
-            this.style.display = "none"; 
-            
+            this.style.display = "none";
             todas.forEach((orb, i) => {
                 setTimeout(() => {
                     const idx = orb.dataset.index;
                     abrirUma(orb, resultados[idx]);
-                }, i * 250);
+                }, i * 300);
             });
         };
-
-function montarListaFinal() {
-    const finalOverlay = document.getElementById("final-screen-overlay");
-    const grid = document.getElementById("final-grid");
-    grid.innerHTML = ""; 
-    resultados.forEach((res, i) => {
-        const card = document.createElement("div");
-        
-        let rClass = "card-r1";
-        let rLabel = "0";
-        if (res.raridade === 3) { rClass = "card-r3"; rLabel = "000"; }
-        else if (res.raridade === 2) { rClass = "card-r2"; rLabel = "00"; }
-
-        card.className = `id-card ${rClass}`;
-        card.style.animationDelay = `${i * 0.1}s`;
-        
-        card.innerHTML = `
-            <span class="card-rarity-label">${rLabel}</span>
-            <span class="card-name-label">${res.nome}</span>
-        `;
-        
-        grid.appendChild(card);
-    });
-
-    setTimeout(() => {
-        finalOverlay.style.display = "flex";
-    }, 1500);
-}
     </script>
 </body>
 </html>
