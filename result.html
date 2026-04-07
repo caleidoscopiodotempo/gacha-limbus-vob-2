@@ -144,6 +144,44 @@
 
         .item-clicavel:hover { color: gold; background: #111; }
 
+        /* eu vou me arrepender pra caralho de fazer essa gracinha mano*/
+#special-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle, rgba(255,215,0,0.2) 0%, rgba(0,0,0,0.95) 100%);
+    display: none; 
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    text-align: center;
+    animation: fadeInGold 0.8s ease-out;
+}
+
+@keyframes fadeInGold {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+#overlay-nome {
+    font-size: 3rem;
+    color: #FFD700;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+#overlay-texto {
+    font-size: 1.5rem;
+    color: #fff;
+    max-width: 800px;
+    font-style: italic;
+    line-height: 1.6;
+}
+        
     </style>
 </head>
 <body>
@@ -155,7 +193,7 @@
         </div>
 
         <div class="circle-container">
-            <div class="center-trigger" id="centerOrb">CLIQUE PARA EXTRAIR</div>
+            <div class="center-trigger" id="centerOrb">(imagine correntes)</div>
             
             <div id="orbsWrapper"></div>
         </div>
@@ -163,7 +201,7 @@
         <div id="resultadoFinal"></div>
 
         <div class="controles-inferiores">
-            <button class="nav-btn" onclick="window.location.href='index.html'">VOLTAR AO PAINEL</button>
+            <button class="nav-btn" onclick="window.location.href='index.html'">voltar</button>
         </div>
     </div>
 
