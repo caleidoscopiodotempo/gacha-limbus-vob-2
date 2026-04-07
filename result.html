@@ -2,19 +2,19 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Jiheisen Co. - Extração</title>
+    <title>gacha pulls</title>
     <style>
         body {
             background-color: #0a0a0a;
             color: white;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             margin: 0;
-            overflow-x: hidden;
+            overflow: hidden;
         }
 
         #gacha-container {
@@ -22,41 +22,75 @@
             width: 100vw;
             height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
         }
 
         #descricaoBox {
             position: absolute;
-            top: 10%;
+            top: 50px;
             width: 80%;
-            max-width: 700px;
-            min-height: 80px;
-            padding: 20px;
-            background: rgba(15, 15, 15, 0.95);
-            border: 1px solid #333;
+            max-width: 600px;
             text-align: center;
-            font-style: italic;
-            font-size: 1.2rem;
-            transition: opacity 0.5s, border-color 0.5s;
-            z-index: 10;
-            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+            transition: opacity 0.5s;
+            z-index: 20;
         }
 
-        .spiral-container {
+        #id-nome {
+            font-weight: bold;
+            font-size: 1.4rem;
+            color: #fff;
+            margin-bottom: 8px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        #id-texto {
+            font-style: italic;
+            font-size: 1.1rem;
+            color: #bbb;
+            display: block;
+            line-height: 1.4;
+        }
+
+        .circle-container {
             position: relative;
-            width: 500px;
-            height: 500px;
+            width: 450px;
+            height: 450px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
+        .center-trigger {
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, #333 0%, #111 100%);
+            border: 2px dashed #555;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 15;
+            transition: 0.3s;
+            color: #666;
+            font-size: 0.8rem;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .center-trigger:hover {
+            border-color: #fff;
+            color: #fff;
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
+        }
+
         .orb {
             position: absolute;
-            width: 70px;
-            height: 70px;
+            width: 75px;
+            height: 75px;
             background: #1a1a1a;
             border: 2px solid #333;
             border-radius: 50%;
@@ -66,55 +100,46 @@
             cursor: pointer;
             font-weight: bold;
             font-size: 1.4rem;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             color: transparent;
-            z-index: 5;
+            z-index: 10;
         }
-
-        .orb:hover { transform: scale(1.1); border-color: #666; }
 
         .orb.raridade-1 { background: #5D4037; border-color: #3E2723; color: #D7CCC8; box-shadow: 0 0 15px #5D4037; }
         .orb.raridade-2 { background: #B71C1C; border-color: #7F0000; color: #FFCDD2; box-shadow: 0 0 20px #B71C1C; }
         .orb.raridade-3 { background: #FFD700; border-color: #B8860B; color: #000; box-shadow: 0 0 30px #FFD700; }
 
-        .controles {
+        .controles-inferiores {
             position: absolute;
-            bottom: 5%;
-            display: flex;
-            gap: 20px;
-            z-index: 10;
+            bottom: 40px;
         }
 
-        button {
-            background: transparent;
-            color: #aaa;
+        button.nav-btn {
+            background: none;
             border: 1px solid #444;
-            padding: 12px 24px;
+            color: #666;
+            padding: 10px 20px;
             cursor: pointer;
-            text-transform: uppercase;
             transition: 0.3s;
         }
 
-        button:hover { color: #fff; border-color: #fff; background: rgba(255,255,255,0.05); }
+        button.nav-btn:hover { color: #fff; border-color: #fff; }
 
         #resultadoFinal {
             position: absolute;
-            right: 2%;
-            top: 20%;
-            width: 250px;
-            max-height: 60vh;
+            right: 30px;
+            top: 100px;
+            width: 220px;
+            max-height: 70vh;
             overflow-y: auto;
-            background: rgba(0,0,0,0.5);
-            padding: 10px;
-            font-size: 0.9rem;
-            border-left: 1px solid #222;
+            font-size: 0.85rem;
+            opacity: 0.6;
         }
 
         .item-clicavel {
-            padding: 6px;
+            padding: 8px;
             cursor: pointer;
-            border-bottom: 1px solid #111;
-            color: #888;
+            border-bottom: 1px solid #222;
         }
 
         .item-clicavel:hover { color: gold; background: #111; }
@@ -124,99 +149,115 @@
 <body>
 
     <div id="gacha-container">
-        <div id="descricaoBox" style="opacity: 0;"></div>
+        <div id="descricaoBox" style="opacity: 0;">
+            <span id="id-nome"></span>
+            <span id="id-texto"></span>
+        </div>
 
-        <div class="spiral-container" id="orbsContainer">
-            </div>
-
-        <div class="controles">
-            <button id="centerOrb">INICIAR REVELAÇÃO</button>
-            <button onclick="window.location.href='index.html'">Retornar</button>
+        <div class="circle-container">
+            <div class="center-trigger" id="centerOrb">CLIQUE PARA EXTRAIR</div>
+            
+            <div id="orbsWrapper"></div>
         </div>
 
         <div id="resultadoFinal"></div>
+
+        <div class="controles-inferiores">
+            <button class="nav-btn" onclick="window.location.href='index.html'">VOLTAR AO PAINEL</button>
+        </div>
     </div>
 
     <script src="js/gacha.js"></script>
 
     <script>
         const resultados = JSON.parse(localStorage.getItem("pullResults")) || [];
-        const container = document.getElementById("orbsContainer");
+        const wrapper = document.getElementById("orbsWrapper");
         const descricaoBox = document.getElementById("descricaoBox");
+        const nomeIdTxt = document.getElementById("id-nome");
+        const corpoTextoTxt = document.getElementById("id-texto");
         const resFinalBox = document.getElementById("resultadoFinal");
         
-        let filaDescricoes = [];
+        let filaResultados = [];
         let mostrandoDescricao = false;
 
+        const totalOrbs = resultados.length;
+        const radius = 180; 
         resultados.forEach((res, index) => {
             const orb = document.createElement("div");
             orb.className = "orb";
             orb.dataset.index = index;
             orb.innerText = "?";
             
-            const angle = index * (Math.PI * 2 / 7);
-            const radius = 80 + (index * 15); 
-            
+            const angle = (index / totalOrbs) * (Math.PI * 2);
             const x = Math.cos(angle) * radius;
             const y = Math.sin(angle) * radius;
             
-            orb.style.transform = `translate(${x}px, ${y}px)`;
+            orb.style.left = `calc(50% + ${x}px - 37.5px)`;
+            orb.style.top = `calc(50% + ${y}px - 37.5px)`;
             
             orb.onclick = function() { abrirUma(this, res); };
-            container.appendChild(orb);
+            wrapper.appendChild(orb);
         });
 
         function abrirUma(elemento, personagem) {
             if (elemento.classList.contains("opened")) return;
             elemento.classList.add("opened");
             
-            let rotulo = "0";
-            if (personagem.raridade === 1) { 
-                elemento.classList.add("raridade-1"); rotulo = "0"; 
-            } else if (personagem.raridade === 2) { 
-                elemento.classList.add("raridade-2"); rotulo = "00"; 
-            } else if (personagem.raridade === 3) { 
-                elemento.classList.add("raridade-3"); rotulo = "000";
-                descricaoBox.style.borderColor = "#FFD700";
-            }
-
+            let rotulo = personagem.raridade === 3 ? "000" : (personagem.raridade === 2 ? "00" : "0");
+            let classe = personagem.raridade === 3 ? "raridade-3" : (personagem.raridade === 2 ? "raridade-2" : "raridade-1");
+            
+            elemento.classList.add(classe);
             elemento.innerText = rotulo;
-            filaDescricoes.push(`[${personagem.nome}]: ${personagem.descricao}`);
+            
+            filaResultados.push(personagem);
             
             if (!mostrandoDescricao) processarProximaFrase();
             if (document.querySelectorAll(".opened").length === resultados.length) montarListaFinal();
         }
 
         function processarProximaFrase() {
-            if (filaDescricoes.length === 0) { mostrandoDescricao = false; return; }
+            if (filaResultados.length === 0) {
+                mostrandoDescricao = false;
+                return;
+            }
+
             mostrandoDescricao = true;
             descricaoBox.style.opacity = 0;
+
             setTimeout(() => {
-                descricaoBox.innerText = filaDescricoes.shift();
+                const p = filaResultados.shift();
+                
+                nomeIdTxt.innerText = p.nome;
+                corpoTextoTxt.innerText = p.descricao;
+                
                 descricaoBox.style.opacity = 1;
+                
                 setTimeout(processarProximaFrase, 5000);
             }, 500);
         }
 
         document.getElementById("centerOrb").onclick = function() {
             const todas = document.querySelectorAll(".orb:not(.opened)");
+            this.style.display = "none"; 
+            
             todas.forEach((orb, i) => {
                 setTimeout(() => {
                     const idx = orb.dataset.index;
                     abrirUma(orb, resultados[idx]);
-                }, i * 300);
+                }, i * 250);
             });
         };
 
         function montarListaFinal() {
-            resFinalBox.innerHTML = "<h4 style='color:#555'>ARQUIVO DE EXTRAÇÃO</h4>";
+            resFinalBox.innerHTML = "<h4 style='border-bottom:1px solid #333'>LOG DE EXTRAÇÃO</h4>";
             resultados.forEach(res => {
                 const p = document.createElement("p");
                 p.className = "item-clicavel";
                 let pref = res.raridade === 3 ? "000" : (res.raridade === 2 ? "00" : "0" );
                 p.innerText = `${pref} | ${res.nome}`;
                 p.onclick = () => {
-                    descricaoBox.innerText = `[${res.nome}]: ${res.descricao}`;
+                    nomeIdTxt.innerText = res.nome;
+                    corpoTextoTxt.innerText = res.descricao;
                     descricaoBox.style.opacity = 1;
                 };
                 resFinalBox.appendChild(p);
