@@ -54,37 +54,44 @@ const pool = [
     {
         nome: "Cinq Assoc. South Section Aramis, Athos & Porthos",
         raridade: 2,
-        descricao: "O espetáculo vai continuar. Sempre continua. Mesmo quando ninguém está assistindo."
+        descricao: "Bom...! O espetáculo vai continuar. Sempre continua. Mesmo quando ninguém está me assistindo."
     },
     {
         nome: "Zwei Association South Section 6 Doujima Shun",
-        raridade: 1,
+        raridade: 2,
         descricao: "Postura firme. Proteção básica. Ainda há muito a aprender- Oi, Aramis! Você está me escutando?!"
     },
     {
         nome: "Shi Association South Section 5 Aramis, Athos & Porthos",
-        raridade: 1,
-        descricao: "Contratos simples, riscos simples. Ou pelo menos deveriam ser, você pode parar de complicar tudo? Eu estou ocupado!"
+        raridade: 2,
+        descricao: "Contratos simples, riscos simples. Ou pelo menos deveriam ser... você pode parar de falar tanto? Eu estou cantando!"
     },
     {
         nome: "Lobotomy E.G.O Frost Splinter Jonas/Lucas",
-        raridade: 1,
-        descricao: "Haaah.. Mais um dia de trabalho. Minhas mãos estão doendo. Nada fora do comum-... O Lucas esqueceu meu caderno no Departamento de Segurança de novo???"
+        raridade: 2,
+        descricao: "Haaah.. Mais um dia de trabalho. Minhas mãos estão doendo, mas nada fora do comum-... O Lucas esqueceu meu caderno no Departamento de Segurança de novo???"
     },
     {
         nome: "Lobotomy E.G.O Cherry Blossoms Shiki",
         raridade: 2,
         descricao: "Monitoramento constante. Tudo parece... sob controle. Obrigado pelo seu serviço, como sempre."
     },
-    {
-        nome: "Kurokumo Clan Wakashu Laura",
+
+        {
+        nome: "Lobotomy E.G.O Beak Aegis",
         raridade: 2,
-        descricao: "Cuidado... algumas flores só parecem bonitas à distância.~"
+        descricao: "Se limpar de todo pecado parece meio absurdo. Mas tudo certo. Desde que você se alimente- Ah, acho que se confundiu. Minha cabeça não é um galho."
+    },
+    
+    {
+        nome: "Kurokumo Clan Captain Laura",
+        raridade: 3,
+        descricao: "Oh? Uma conversa? Lhe deixarei falar, mas você não possui permissão para se aproximar nem mais um passo... Esqueceu que todas as belas rosas tem espinhos?~"
     },
     {
         nome: "R Corp 4th Pack Reindeer Aegis",
         raridade: 2,
-        descricao: "Hippity Hop. Eficiência otimizada. Execução direta. Com pulinhos. Ou algo assim."
+        descricao: "Hippity hop. Eficiência otimizada. Execução direta. Com pulinhos. Hippity hop. Ou algo assim."
     },
     {
         nome: "Seven Association South Section 1 Loreto",
@@ -92,15 +99,33 @@ const pool = [
         descricao: "A verdade está sempre lá, não está...? Basta saber onde olhar.. haah... Isso é algo que você diria."
     },
     {
-        nome: "Tingtang Gang Member Jonas & Lucas",
-        raridade: 1,
-        descricao: "—Trabalho básico.\n—Nada complicado.\n—Por enquanto."
+        nome: "Tingtang Gang Member Aegis",
+        raridade: 2,
+        descricao: "Você deveria saber que não é bem vindo. Fique de costas. Não pretendo me sujar com o sangue do seu pescoço."
     },
     {
-        nome: "Tingtang Gang Member Jonas & Lucas",
-        raridade: 2,
-        descricao: "—Você fala.\n—Eu resolvo.\n—Simples assim. Se você me atrapalhar de novo, você vai torcer para que eu não te encontre."
+        nome: "Tingtang Gang GangLeader Jonas & Lucas",
+        raridade: 3,
+        descricao: "—Você fala.\n—Eu resolvo~.\n—Simples assim. Se você me atrapalhar outra vez, vai torcer para que eu não te encontre."
     }
+
+{ 
+          nome: "The Echoes' Heir Loreto", 
+          raridade: 3, 
+          descricao: "O que há? Vamos, a música está doce e a noite é jovem. Deixe-se levar pela melodia e dance sob meu palco, o show está prestes a começar afinal de contas!"
+},
+{ 
+          nome: "Chief Butler Aegis", 
+          raridade: 3, 
+          descricao: "Os corredores estão limpos. A mesa está posta. As roupas estão passadas. Sob a \"bagunça\" que fez, senhor Raskolnikov... Eu logo irei cuidar dela." 
+},
+{ 
+          nome: "District 25 Chief Detective Laura", 
+          raridade: 3, 
+          descricao: "Aah, bem-vindo ao meu escritório! Se você está aqui, deve ser porque algo horrível te aconteceu. Não se preocupe, eu vou cuidar de tudo, você só vai precisar descansar um pouco e me contar tudo. Eu vou cuidar do resto, eu prometo.~" 
+}
+    
+
 ];
 
 function gerarPull(qtd) {
