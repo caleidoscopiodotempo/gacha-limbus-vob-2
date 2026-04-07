@@ -144,47 +144,52 @@
 
         .item-clicavel:hover { color: gold; background: #111; }
 
-        /* eu vou me arrepender pra caralho de fazer essa gracinha mano*/
-#special-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: radial-gradient(circle, rgba(255,215,0,0.2) 0%, rgba(0,0,0,0.95) 100%);
-    display: none; 
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-    text-align: center;
-    animation: fadeInGold 0.8s ease-out;
-}
+        #special-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle, rgba(255,215,0,0.2) 0%, rgba(0,0,0,0.95) 100%);
+            display: none; 
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            text-align: center;
+            transition: opacity 0.5s ease;
+            animation: fadeInGold 0.8s ease-out;
+        }
 
-@keyframes fadeInGold {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
+        @keyframes fadeInGold {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 
-#overlay-nome {
-    font-size: 3rem;
-    color: #FFD700;
-    text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
-    margin-bottom: 20px;
-    text-transform: uppercase;
-}
+        #overlay-nome {
+            font-size: 3rem;
+            color: #FFD700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
 
-#overlay-texto {
-    font-size: 1.5rem;
-    color: #fff;
-    max-width: 800px;
-    font-style: italic;
-    line-height: 1.6;
-}
-        
+        #overlay-texto {
+            font-size: 1.5rem;
+            color: #fff;
+            max-width: 800px;
+            font-style: italic;
+            line-height: 1.6;
+            padding: 0 20px;
+        }
     </style>
 </head>
 <body>
+
+    <div id="special-overlay">
+        <div id="overlay-nome"></div>
+        <div id="overlay-texto"></div>
+    </div>
 
     <div id="gacha-container">
         <div id="descricaoBox" style="opacity: 0;">
@@ -193,8 +198,7 @@
         </div>
 
         <div class="circle-container">
-            <div class="center-trigger" id="centerOrb">(imagine correntes)</div>
-            
+            <div class="center-trigger" id="centerOrb">(revelar correntes)</div>
             <div id="orbsWrapper"></div>
         </div>
 
@@ -220,6 +224,7 @@
 
         const totalOrbs = resultados.length;
         const radius = 180; 
+
         resultados.forEach((res, index) => {
             const orb = document.createElement("div");
             orb.className = "orb";
@@ -246,11 +251,35 @@
             
             elemento.classList.add(classe);
             elemento.innerText = rotulo;
-            
-            filaResultados.push(personagem);
-            
-            if (!mostrandoDescricao) processarProximaFrase();
+
+            if (personagem.raridade === 3) {
+                exibirDestaqueDourado(personagem);
+            } else {
+                filaResultados.push(personagem);
+                if (!mostrandoDescricao) processarProximaFrase();
+            }
+
             if (document.querySelectorAll(".opened").length === resultados.length) montarListaFinal();
+        }
+
+        function exibirDestaqueDourado(p) {
+            const overlay = document.getElementById("special-overlay");
+            const oNome = document.getElementById("overlay-nome");
+            const oTexto = document.getElementById("overlay-texto");
+
+            oNome.innerText = p.nome;
+            oTexto.innerText = p.descricao;
+            overlay.style.display = "flex";
+            overlay.style.opacity = "1";
+
+            setTimeout(() => {
+                overlay.style.opacity = "0";
+                setTimeout(() => {
+                    overlay.style.display = "none";
+                    filaResultados.push(p);
+                    if (!mostrandoDescricao) processarProximaFrase();
+                }, 500);
+            }, 4000); 
         }
 
         function processarProximaFrase() {
@@ -264,10 +293,8 @@
 
             setTimeout(() => {
                 const p = filaResultados.shift();
-                
                 nomeIdTxt.innerText = p.nome;
                 corpoTextoTxt.innerText = p.descricao;
-                
                 descricaoBox.style.opacity = 1;
                 
                 setTimeout(processarProximaFrase, 5000);
