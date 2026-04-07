@@ -58,7 +58,7 @@ const pool = [
     {
 
         nome: "Kurokumo Wakashu Doujima Shun",
-        raridade: 2,
+        raridade: 3,
         descricao: "Disciplina. Silêncio. Repetição. Ainda não é o bastante... mas chegará lá. Precisa chegar. Ah? No. Eu estava falando sozinho. Não fale comigo."
 
     },
@@ -74,14 +74,14 @@ const pool = [
     {
 
         nome: "Seven Assoc. South Section Aramis, Athos & Porthos",
-        raridade: 1,
+        raridade: 2,
         descricao: "Um sorriso, uma piada... e talvez algo mais. Depende do quanto você pagar, docinho. Só me dê os detalhes."
 
     },
 
     {
 
-        nome: "Cinq Assoc. South Section Aramis, Athos & Porthos",
+        nome: "Shi Association South Section 5  Aramis, Athos & Porthos",
         raridade: 2,
         descricao: "Bom...! O espetáculo vai continuar. Sempre continua. Mesmo quando ninguém está me assistindo."
 
@@ -90,14 +90,14 @@ const pool = [
     {
 
         nome: "Cinq Assoc. South Section Doujima Shun",
-        raridade: 2,
+        raridade: 3,
         descricao: "Postura firme. Proteção básica. Ainda há muito a aprender- Oi, Aramis! Você está me escutando?!"
 
     },
 
     {
 
-        nome: "Shi Association South Section 5 Aramis, Athos & Porthos",
+        nome: "Cinq Assoc. South Section Aramis, Athos & Porthos",
         raridade: 2,
         descricao: "Contratos simples, riscos simples. Ou pelo menos deveriam ser... você pode parar de falar tanto? Eu estou cantando!"
 
@@ -170,7 +170,7 @@ const pool = [
     { 
         nome: "Chief Butler Aegis", 
         raridade: 3, 
-        descricao: "Os corredores estão limpos. A mesa está posta. As roupas estão passadas. Sob a \"bagunça\" que fez, senhor Raskolnikov... Eu logo irei cuidar dela." 
+        descricao: "Os corredores estão limpos. A mesa está posta. As roupas estão passadas. Sobre a \"bagunça\" que fez, senhor Raskolnikov... Eu logo irei cuidar dela." 
     },
     { 
         nome: "District 25 Chief Detective Laura", 
