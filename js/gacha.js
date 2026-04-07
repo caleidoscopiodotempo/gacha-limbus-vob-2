@@ -146,7 +146,7 @@ const pool = [
     {
 
         nome: "Seven Association South Section 1 Loreto",
-        raridade: 3,
+        raridade: 2,
         descricao: "A verdade está sempre lá, não está...? Basta saber onde olhar.. haah... Isso é algo que você diria."
 
     },
@@ -177,6 +177,7 @@ const pool = [
         raridade: 3, 
         descricao: "Aah, bem-vindo ao meu escritório! Se você está aqui, deve ser porque algo horrível te aconteceu. Não se preocupe, eu vou cuidar de tudo, você só vai precisar descansar um pouquinho, respirar fundo e me contar os detalhes. Eu vou cuidar do resto, te prometo.~" 
     }
+ 
 ];
 
 function gerarPull(qtd) {
