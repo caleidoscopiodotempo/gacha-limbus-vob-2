@@ -1,4 +1,3 @@
-console.log("Arquivo gacha.js carregado com sucesso!");
 
 const pool = [
     {
@@ -107,7 +106,7 @@ const pool = [
         nome: "Tingtang Gang GangLeader Jonas & Lucas",
         raridade: 3,
         descricao: "—Você fala.\n—Eu resolvo~.\n—Simples assim. Se você me atrapalhar outra vez, vai torcer para que eu não te encontre."
-    }
+    },
 
 { 
           nome: "The Echoes' Heir Loreto", 
