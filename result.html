@@ -162,6 +162,13 @@
             cursor: pointer;
         }
 
+        <div id="final-screen-overlay">
+    <h2 style="letter-spacing: 5px; color: #666;">RELATÓRIO DE EXTRAÇÃO</h2>
+    <div class="results-grid" id="final-grid">
+        </div>
+    <button id="btn-fechar-final" onclick="location.reload()">NOVA EXTRAÇÃO</button>
+</div>
+
         @keyframes fadeInGold {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -274,7 +281,6 @@ let timeoutDestaque;
             overlay.style.display = "flex";
             overlay.style.opacity = "1";
 
-            // Função para fechar o destaque
             const fecharDestaque = () => { 
                 clearTimeout(timeoutDestaque);
                 overlay.style.opacity = "0";
@@ -323,21 +329,33 @@ let timeoutDestaque;
             });
         };
 
-        function montarListaFinal() {
-            resFinalBox.innerHTML = "<h4 style='border-bottom:1px solid #333'>LOG DE EXTRAÇÃO</h4>";
-            resultados.forEach(res => {
-                const p = document.createElement("p");
-                p.className = "item-clicavel";
-                let pref = res.raridade === 3 ? "000" : (res.raridade === 2 ? "00" : "0" );
-                p.innerText = `${pref} | ${res.nome}`;
-                p.onclick = () => {
-                    nomeIdTxt.innerText = res.nome;
-                    corpoTextoTxt.innerText = res.descricao;
-                    descricaoBox.style.opacity = 1;
-                };
-                resFinalBox.appendChild(p);
-            });
-        }
+function montarListaFinal() {
+    const finalOverlay = document.getElementById("final-screen-overlay");
+    const grid = document.getElementById("final-grid");
+    grid.innerHTML = ""; 
+    resultados.forEach((res, i) => {
+        const card = document.createElement("div");
+        
+        let rClass = "card-r1";
+        let rLabel = "0";
+        if (res.raridade === 3) { rClass = "card-r3"; rLabel = "000"; }
+        else if (res.raridade === 2) { rClass = "card-r2"; rLabel = "00"; }
+
+        card.className = `id-card ${rClass}`;
+        card.style.animationDelay = `${i * 0.1}s`;
+        
+        card.innerHTML = `
+            <span class="card-rarity-label">${rLabel}</span>
+            <span class="card-name-label">${res.nome}</span>
+        `;
+        
+        grid.appendChild(card);
+    });
+
+    setTimeout(() => {
+        finalOverlay.style.display = "flex";
+    }, 1500);
+}
     </script>
 </body>
 </html>
