@@ -89,7 +89,7 @@ const pool = [
 
     {
 
-        nome: "Zwei Association South Section 6 Doujima Shun",
+        nome: "Cinq Assoc. South Section Doujima Shun",
         raridade: 2,
         descricao: "Postura firme. Proteção básica. Ainda há muito a aprender- Oi, Aramis! Você está me escutando?!"
 
@@ -137,7 +137,7 @@ const pool = [
 
     {
 
-        nome: "R Corp 4th Pack Reindeer Aegis",
+        nome: "R Corp 4th Pack Rabbit Aegis",
         raridade: 2,
         descricao: "Hippity hop. Eficiência otimizada. Execução direta. Com pulinhos. Hippity hop. Ou algo assim."
 
@@ -175,7 +175,7 @@ const pool = [
     { 
         nome: "District 25 Chief Detective Laura", 
         raridade: 3, 
-        descricao: "Aah, bem-vindo ao meu escritório! Se você está aqui, deve ser porque algo horrível te aconteceu. Não se preocupe, eu vou cuidar de tudo, você só vai precisar descansar um pouco e me contar tudo. Eu vou cuidar do resto, eu prometo.~" 
+        descricao: "Aah, bem-vindo ao meu escritório! Se você está aqui, deve ser porque algo horrível te aconteceu. Não se preocupe, eu vou cuidar de tudo, você só vai precisar descansar um pouquinho, respirar fundo e me contar os detalhes. Eu vou cuidar do resto, te prometo.~" 
     }
 ];
 
