@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Gacha Results - Extraction Report</title>
+    <title>Extraction Report</title>
     <style>
         body {
             background-color: #0a0a0a;
@@ -77,13 +77,6 @@
             transition: 0.3s;
             color: #666;
             text-align: center;
-            padding: 10px;
-        }
-
-        .center-trigger:hover {
-            border-color: #fff;
-            color: #fff;
-            box-shadow: 0 0 20px rgba(255,255,255,0.2);
         }
 
         .orb {
@@ -104,11 +97,11 @@
             z-index: 10;
         }
 
-        .orb.opened { transform: scale(1.1); }
         .orb.raridade-1 { background: #5D4037; border-color: #3E2723; color: #D7CCC8; box-shadow: 0 0 15px #5D4037; }
         .orb.raridade-2 { background: #B71C1C; border-color: #7F0000; color: #FFCDD2; box-shadow: 0 0 20px #B71C1C; }
         .orb.raridade-3 { background: #FFD700; border-color: #B8860B; color: #000; box-shadow: 0 0 30px #FFD700; }
 
+        /* Overlays */
         #special-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -118,7 +111,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
+            z-index: 3000; /* Acima de tudo */
             text-align: center;
             cursor: pointer;
         }
@@ -139,56 +132,64 @@
         .results-grid {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             width: 90%;
-            max-width: 800px;
-            margin-top: 30px;
+            max-width: 700px;
+            margin-top: 20px;
         }
 
         .id-card {
             display: flex;
             align-items: center;
-            padding: 15px 25px;
-            border-left: 8px solid;
+            padding: 12px 20px;
+            border-left: 6px solid;
             background: #111;
-            font-family: 'Courier New', Courier, monospace;
-            animation: slideIn 0.5s ease forwards;
+            font-family: monospace;
             opacity: 0;
+            animation: slideIn 0.4s ease forwards;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .id-card:hover {
+            transform: scale(1.02);
+            background: #1a1a1a;
         }
 
         @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-20px); }
+            from { opacity: 0; transform: translateX(-30px); }
             to { opacity: 1; transform: translateX(0); }
         }
 
-        .card-r1 { border-color: #5d4037; background: linear-gradient(90deg, #2b1d1a 0%, #000 100%); color: #d7ccc8; }
-        .card-r2 { border-color: #b71c1c; background: linear-gradient(90deg, #4a0000 0%, #000 100%); color: #ffcdd2; }
-        .card-r3 { border-color: #ffd700; background: linear-gradient(90deg, #4d3d00 0%, #000 100%); color: #fff; }
+        .card-r1 { border-color: #5d4037; color: #888; }
+        .card-r2 { border-color: #b71c1c; color: #ffcdd2; background: linear-gradient(90deg, #300 0%, #111 100%); }
+        .card-r3 { border-color: #ffd700; color: #fff; background: linear-gradient(90deg, #430 0%, #111 100%); }
 
-        .card-rarity-label { font-weight: bold; font-size: 1.3rem; margin-right: 30px; width: 50px; }
-        
+        .card-rarity-label { font-weight: bold; margin-right: 20px; width: 40px; }
+
         #btn-fechar-final {
-            margin: 40px 0;
-            padding: 15px 50px;
-            background: #222;
-            border: 1px solid #555;
-            color: white;
+            margin: 30px 0 60px 0;
+            padding: 15px 40px;
+            background: none;
+            border: 1px solid #444;
+            color: #888;
             cursor: pointer;
-            letter-spacing: 2px;
+            text-transform: uppercase;
         }
+        #btn-fechar-final:hover { border-color: #fff; color: #fff; }
     </style>
 </head>
 <body>
 
     <div id="special-overlay">
-        <div id="overlay-nome" style="font-size: 3.5rem; color: gold; text-shadow: 0 0 20px gold;"></div>
-        <div id="overlay-texto" style="font-size: 1.5rem; font-style: italic; max-width: 800px;"></div>
+        <div id="overlay-nome" style="font-size: 3rem; color: gold; margin-bottom: 20px;"></div>
+        <div id="overlay-texto" style="font-size: 1.4rem; font-style: italic; max-width: 700px; padding: 0 20px;"></div>
     </div>
 
     <div id="final-screen-overlay">
-        <h2 style="letter-spacing: 8px; color: #444;">RECOVERY LOG COMPLETE</h2>
+        <h2 style="letter-spacing: 5px; color: #555;">RECOVERY COMPLETE</h2>
         <div class="results-grid" id="final-grid"></div>
-        <button id="btn-fechar-final" onclick="window.location.href='index.html'">RETORNAR AO PAINEL</button>
+        <button id="btn-fechar-final" onclick="window.location.href='index.html'">Finalizar</button>
     </div>
 
     <div id="gacha-container">
@@ -198,7 +199,7 @@
         </div>
 
         <div class="circle-container">
-            <div class="center-trigger" id="centerOrb">INICIAR<br>PROTOCOLO</div>
+            <div class="center-trigger" id="centerOrb">EXTRAIR</div>
             <div id="orbsWrapper"></div>
         </div>
     </div>
@@ -214,7 +215,7 @@
         let mostrandoDescricao = false;
         let timeoutDestaque;
 
-        const radius = 190;
+        const radius = 180;
         resultados.forEach((res, index) => {
             const orb = document.createElement("div");
             orb.className = "orb";
@@ -237,20 +238,20 @@
             elemento.classList.add("opened");
             
             let rotulo = personagem.raridade === 3 ? "000" : (personagem.raridade === 2 ? "00" : "0");
-            let classe = `raridade-${personagem.raridade}`;
-            
-            elemento.classList.add(classe);
+            elemento.classList.add(`raridade-${personagem.raridade}`);
             elemento.innerText = rotulo;
 
-            if (personagem.raridade === 3) {
-                exibirDestaqueDourado(personagem);
-            } else {
-                filaResultados.push(personagem);
-                if (!mostrandoDescricao) processarProximaFrase();
+            if (personagem.raridade >= 2 || resultados.length === 1) {
+                if (personagem.raridade === 3) {
+                    exibirDestaqueDourado(personagem);
+                } else {
+                    filaResultados.push(personagem);
+                    if (!mostrandoDescricao) processarProximaFrase();
+                }
             }
 
             if (document.querySelectorAll(".opened").length === resultados.length) {
-                setTimeout(montarListaFinal, 2000);
+                setTimeout(montarListaFinal, 1500);
             }
         }
 
@@ -299,11 +300,22 @@
                 let rLabel = res.raridade === 3 ? "000" : (res.raridade === 2 ? "00" : "0");
 
                 card.className = `id-card ${rClass}`;
-                card.style.animationDelay = `${i * 0.15}s`;
+                card.style.animationDelay = `${i * 0.1}s`;
                 card.innerHTML = `
                     <span class="card-rarity-label">${rLabel}</span>
                     <span class="card-name-label">${res.nome}</span>
                 `;
+                
+                card.onclick = () => {
+
+                    const overlay = document.getElementById("special-overlay");
+                    document.getElementById("overlay-nome").innerText = res.nome;
+                    document.getElementById("overlay-texto").innerText = res.descricao;
+                    overlay.style.display = "flex";
+                    
+                    overlay.onclick = () => { overlay.style.display = "none"; };
+                };
+
                 grid.appendChild(card);
             });
             finalOverlay.style.display = "flex";
@@ -316,7 +328,7 @@
                 setTimeout(() => {
                     const idx = orb.dataset.index;
                     abrirUma(orb, resultados[idx]);
-                }, i * 300);
+                }, i * 200);
             });
         };
     </script>
