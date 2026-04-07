@@ -208,7 +208,7 @@
 
             setTimeout(() => {
                 processarFila();
-            }, 2500);
+            }, 5000);
         }
 
 
@@ -239,43 +239,33 @@
         }
 
 
-        function mostrarResultadosFinais() {
-            const box = document.getElementById("resultadoFinal");
+     function mostrarResultadosFinais() {
+              const box = document.getElementById("resultadoFinal");
+                   box.innerHTML = "<h3>Resultados (Clique para ler a frase):</h3>"; 
+              box.style.opacity = "1";
 
+    const nomesUnicos = [...new Set(resultados.map(r => r.nome))];
 
-            const contagem = {};
+    nomesUnicos.forEach(nome => {
+        const p = document.createElement("p");
+        p.innerText = nome;
+        p.style.cursor = "pointer";
+        p.style.margin = "5px 0";
+        p.style.textDecoration = "underline"; 
 
-
-            resultados.forEach(r => {
-                contagem[r.nome] = (contagem[r.nome] || 0) + 1;
-            });
-
-
-            let texto = "Resultado:\n";
-
-
-            for (let nome in contagem) {
-                texto += `${nome} x${contagem[nome]}\n`;
+        p.onclick = () => {
+            const personagem = pool.find(person => person.nome === nome);
+            if (personagem) {
+                descricaoBox.innerText = `${personagem.nome} — ${personagem.descricao}`;
+                descricaoBox.classList.remove("fade");
+                void descricaoBox.offsetWidth;
+                descricaoBox.classList.add("fade");
             }
-
-
-            box.innerText = texto;
-            box.style.opacity = "1";
-            box.classList.add("fade");
-        }
-
-
-        document.getElementById("centerOrb").onclick = () => {
-            const orbs = document.querySelectorAll(".orb");
-
-
-            orbs.forEach((orb, i) => {
-                setTimeout(() => {
-                    const index = orb.dataset.index;
-                    revelarOrb(orb, resultados[index]);
-                }, i * 200);
-            });
         };
+
+        box.appendChild(p);
+    });
+}
 
 
         document.getElementById("backBtn").onclick = () => {
