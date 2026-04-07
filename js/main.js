@@ -83,3 +83,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 });
+
+function bongyFarm() {
+    const bongy = document.getElementById("bongy-img");
+    if (!bongy) return;
+
+    bongy.classList.remove("bongy-jump");
+    void bongy.offsetWidth; 
+    bongy.classList.add("bongy-jump");
+    
+  
+}
