@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>resultado dos pull</title>
+    <title>pulls do gacha ;p</title>
     <style>
         body {
             background-color: #0a0a0a;
@@ -116,7 +116,7 @@
         }
 
         .overlay-r1 { border-top: 4px solid #5d4037; box-shadow: inset 0 0 100px rgba(93, 64, 55, 0.3); }
-        .overlay-r2 { border-top: 4px solid #b71c1c; box-shadow: inset 0 0 100px rgba(183, 28, 28, 0.4); }
+        .overlay-r2 { border-top: 4px solid #b71c1c; box-shadow: inset 0 0 100px rgba(183, 28, 28, 0.6); }
         .overlay-r3 { border-top: 4px solid #ffd700; box-shadow: inset 0 0 100px rgba(255, 215, 0, 0.5); }
 
         #final-screen-overlay {
@@ -182,8 +182,8 @@
 <body>
 
     <div id="special-overlay">
-        <div id="overlay-nome" style="font-size: 3rem; margin-bottom: 20px;"></div>
-        <div id="overlay-texto" style="font-size: 1.4rem; font-style: italic; max-width: 700px; padding: 0 20px;"></div>
+        <div id="overlay-nome" style="font-size: 3rem; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 3px;"></div>
+        <div id="overlay-texto" style="font-size: 1.4rem; font-style: italic; max-width: 700px; padding: 0 20px; line-height: 1.6; color: #ddd;"></div>
     </div>
 
     <div id="final-screen-overlay">
@@ -199,7 +199,7 @@
         </div>
 
         <div class="circle-container">
-            <div class="center-trigger" id="centerOrb">.</div>
+            <div class="center-trigger" id="centerOrb">(correntes)</div>
             <div id="orbsWrapper"></div>
         </div>
     </div>
@@ -241,30 +241,39 @@
             elemento.classList.add(`raridade-${personagem.raridade}`);
             elemento.innerText = rotulo;
 
-            if (personagem.raridade >= 2 || resultados.length === 1) {
-                if (personagem.raridade === 3) {
-                    exibirDestaqueDourado(personagem);
-                } else {
-                    filaResultados.push(personagem);
-                    if (!mostrandoDescricao) processarProximaFrase();
-                }
+
+            if (personagem.raridade >= 2) {
+                exibirDestaqueEspecial(personagem);
+            } else if (resultados.length === 1) {
+
+                filaResultados.push(personagem);
+                if (!mostrandoDescricao) processarProximaFrase();
             }
 
             if (document.querySelectorAll(".opened").length === resultados.length) {
-                setTimeout(montarListaFinal, 1500);
+                setTimeout(montarListaFinal, 2000);
             }
         }
 
-        function exibirDestaqueDourado(p) {
+        function exibirDestaqueEspecial(p) {
             const overlay = document.getElementById("special-overlay");
             const oNome = document.getElementById("overlay-nome");
             const oTexto = document.getElementById("overlay-texto");
 
-            overlay.className = "";
+            overlay.className = ""; 
             let rColor = "#888";
-            if (p.raridade === 3) { overlay.classList.add("overlay-r3"); rColor = "gold"; }
-            else if (p.raridade === 2) { overlay.classList.add("overlay-r2"); rColor = "#ff4444"; }
-            else { overlay.classList.add("overlay-r1"); }
+            let tempoExibicao = 8000; 
+
+            if (p.raridade === 3) { 
+                overlay.classList.add("overlay-r3"); 
+                rColor = "gold";
+                tempoExibicao = 12000; 
+            } 
+            else if (p.raridade === 2) { 
+                overlay.classList.add("overlay-r2"); 
+                rColor = "#ff4444"; 
+                tempoExibicao = 8000;
+            }
 
             oNome.innerText = p.nome;
             oNome.style.color = rColor;
@@ -278,7 +287,7 @@
             };
 
             overlay.onclick = fechar;
-            timeoutDestaque = setTimeout(fechar, 8000);
+            timeoutDestaque = setTimeout(fechar, tempoExibicao);
         }
 
         function processarProximaFrase() {
@@ -294,7 +303,8 @@
                 nomeIdTxt.innerText = p.nome;
                 corpoTextoTxt.innerText = p.descricao;
                 descricaoBox.style.opacity = 1;
-                setTimeout(processarProximaFrase, 8000);
+                // Tempo de leitura aumentado para 8 segundos
+                setTimeout(processarProximaFrase, 8000); 
             }, 500);
         }
 
@@ -316,7 +326,7 @@
                 `;
                 
                 card.onclick = () => {
-                    exibirDestaqueDourado(res);
+                    exibirDestaqueEspecial(res);
                 };
 
                 grid.appendChild(card);
