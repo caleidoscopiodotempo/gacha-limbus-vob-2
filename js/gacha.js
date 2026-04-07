@@ -136,23 +136,32 @@ function gerarPull(qtd) {
 },
 
     ]
+
     const resultados = [];
+    for (let i = 0; i < qtd; i++) { 
+        let roll = Math.random(0;
+        let selecionado;
 
+        if (roll < 0.05) { 
+            const raros = pool.filter(p => p.raridade === "000");
+            selecionado = raros [Math.floor(Math.random() * raros.lenght)];
 
-    for (let i = 0; i < qtd; i++) {
-        let roll = Math.random();
+        }
+        else if (roll <0.30)
+            const incomuns = pool.filter(p => p.raridade === "00");
+        selecionado = incomuns[Math.floor(Math.random() * incomuns.lenght)];
 
+    } 
+    else { 
+        const comuns = pool.fiter(p => p.raridade === "0");
+        selecionado = comuns[Math.floor(Math.random() * comuns.lenght)];
+    } 
 
-        if (roll < 0.05)
-            resultados.push(pool[0]);
-        else if (roll < 0.30)
-            resultados.push(pool[1]);
-        else
-            resultados.push(pool[2]);
+    if (selecionado) { 
+        resultados.push(selecionado);
     }
+} 
 
-
-    return resultados;
-}
+return resultados;
 
 
