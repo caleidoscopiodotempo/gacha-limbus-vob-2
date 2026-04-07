@@ -157,8 +157,9 @@
             justify-content: center;
             z-index: 100;
             text-align: center;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.8s ease;
             animation: fadeInGold 0.8s ease-out;
+            cursor: pointer;
         }
 
         @keyframes fadeInGold {
@@ -261,7 +262,8 @@
 
             if (document.querySelectorAll(".opened").length === resultados.length) montarListaFinal();
         }
-
+let timeoutDestaque; 
+        
         function exibirDestaqueDourado(p) {
             const overlay = document.getElementById("special-overlay");
             const oNome = document.getElementById("overlay-nome");
@@ -272,14 +274,22 @@
             overlay.style.display = "flex";
             overlay.style.opacity = "1";
 
-            setTimeout(() => {
+            // Função para fechar o destaque
+            const fecharDestaque = () => { 
+                clearTimeout(timeoutDestaque);
                 overlay.style.opacity = "0";
+
                 setTimeout(() => {
                     overlay.style.display = "none";
+                    overlay.onclick = null;
+                    
                     filaResultados.push(p);
                     if (!mostrandoDescricao) processarProximaFrase();
-                }, 500);
-            }, 4000); 
+                }, 800);
+            };
+
+            overlay.onclick = fecharDestaque;
+            timeoutDestaque = setTimeout(fecharDestaque, 8000);
         }
 
         function processarProximaFrase() {
