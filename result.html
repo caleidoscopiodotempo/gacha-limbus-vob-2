@@ -2,281 +2,125 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Resultados</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Jiheisen Co. - Extração</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        #resultadoFinal p {
+            cursor: pointer;
+            transition: 0.2s;
+            margin: 8px 0;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        #resultadoFinal p:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffcc00; 
+        }
+        .opened {
+            filter: grayscale(100%);
+            opacity: 0.7;
+            transform: scale(0.9);
+        }
+    </style>
 </head>
+<body>
 
+    <div id="gacha-container">
+        <div id="descricaoBox" class="fade">Bem-vindo, Gerente. Clique nas orbes para revelar as IDs.</div>
 
-<body class="result">
+        <div id="orbsContainer"></div>
 
+        <button id="centerOrb">REVELAR TUDO</button>
 
-    <div class="circle-container" id="container"></div>
+        <div id="resultadoFinal"></div>
 
-
-    <div id="centerOrb">REVELAR</div>
-
-
-    <button id="backBtn">Voltar</button>
-
-
-    <div id="descricaoBox"></div>
-
-
-    <div id="resultadoFinal"></div>
-
+        <button onclick="window.location.href='index.html'">Voltar ao Painel</button>
+    </div>
 
     <script src="js/gacha.js"></script>
-
-
     <script>
-        let resultados = JSON.parse(localStorage.getItem("pullResults"));
-
-
-        if (!resultados || resultados.length === 0) {
-            resultados = gerarPull(10);
-        }
-
-
-        resultados = resultados.filter(res => res);
-
-
-        const container = document.getElementById("container");
+        let resultados = JSON.parse(localStorage.getItem("pullResults")) || [];
+        const container = document.getElementById("orbsContainer");
         const descricaoBox = document.getElementById("descricaoBox");
-
-
-        const radius = 180;
-        const descricoesMostradas = new Set();
-
-
-        let abertas = 0;
-
-
-        const filaDescricoes = [];
+        const resFinalBox = document.getElementById("resultadoFinal");
+        
+        let filaDescricoes = [];
         let mostrandoDescricao = false;
 
-
-        resultados.forEach((res, i) => {
-
-
-            const angle = (i / resultados.length) * (2 * Math.PI);
-            const x = Math.cos(angle) * radius;
-            const y = Math.sin(angle) * radius;
-
-
-            const distance = Math.sqrt(x * x + y * y);
-            const angleDeg = Math.atan2(y, x) * (180 / Math.PI);
-
-
-            const line = document.createElement("div");
-            line.classList.add("chain");
-            line.style.width = `${distance}px`;
-            line.style.left = "50%";
-            line.style.top = "50%";
-            line.style.transform = `translate(-50%, -50%) rotate(${angleDeg}deg)`;
-            container.appendChild(line);
-
-
+        resultados.forEach((res, index) => {
             const orb = document.createElement("div");
-            orb.classList.add("orb");
-
-
-            orb.dataset.index = i;
-
-
-            orb.style.left = "50%";
-            orb.style.top = "50%";
-            orb.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
-
-
+            orb.className = "orb";
+            orb.dataset.index = index;
+            orb.innerText = "?"; 
+            
             orb.onclick = () => revelarOrb(orb, res);
-
-
             container.appendChild(orb);
         });
 
-
         function revelarOrb(orb, res) {
-
-
-            if (!res) return;
-
-
             if (orb.classList.contains("opened")) return;
+
             orb.classList.add("opened");
-
-
-            orb.style.transition = "transform 0.4s";
-            orb.style.transform = "translate(-50%, -50%)";
-
-
-            setTimeout(() => {
-
-
-                orb.innerText = "...";
-
-
-                if (res.raridade === 3) {
-                    mostrarEventoRaro(res, () => finalizarReveal(orb, res));
-                } else {
-                    setTimeout(() => finalizarReveal(orb, res), 300);
-                }
-
-
-            }, 400);
-        }
-
-
-        function finalizarReveal(orb, res) {
-            orb.innerText = res.nome;
-
-
-            if (res.raridade === 3) {
-                orb.style.background = "gold";
-                orb.style.color = "black";
-            }
-            else if (res.raridade === 2) {
-                orb.style.background = "lightblue";
-                orb.style.color = "black";
-            }
-            else {
-                orb.style.background = "#555";
-            }
-
-
-            if (!descricoesMostradas.has(res.nome)) {
-                mostrarDescricao(`${res.nome} — ${res.descricao}`);
-                descricoesMostradas.add(res.nome);
-            }
-
-
-            setTimeout(() => {
-                orb.style.transition = "opacity 0.5s";
-                orb.style.opacity = "0";
-
-
-                setTimeout(() => {
-                    orb.remove();
-                }, 500);
-            }, 300);
-
-
-            abertas++;
-
-
-            if (abertas === resultados.length) {
-                setTimeout(() => {
-                    mostrarResultadosFinais();
-                }, 500);
-            }
-        }
-
-
-        function mostrarDescricao(texto) {
-
-
-            filaDescricoes.push(texto);
-
-
+            orb.innerText = res.raridade + "★"; 
+            
+            filaDescricoes.push(`${res.nome}: "${res.descricao}"`);
+            
             if (!mostrandoDescricao) {
                 processarFila();
             }
+
+            const abertas = document.querySelectorAll(".opened").length;
+            if (abertas === resultados.length) {
+                setTimeout(mostrarResultadosFinais, 1000);
+            }
         }
 
-
         function processarFila() {
-
-
             if (filaDescricoes.length === 0) {
                 mostrandoDescricao = false;
                 return;
             }
 
-
             mostrandoDescricao = true;
-
-
             const texto = filaDescricoes.shift();
 
-
-            descricaoBox.innerText = texto;
-
-
-            descricaoBox.classList.remove("fade");
-            void descricaoBox.offsetWidth;
-            descricaoBox.classList.add("fade");
-
-
+            // Efeito de Fade Out e In
+            descricaoBox.style.opacity = 0;
+            
             setTimeout(() => {
-                processarFila();
-            }, 5000);
+                descricaoBox.innerText = texto;
+                descricaoBox.style.opacity = 1;
+                
+                setTimeout(processarFila, 5000); 
+            }, 500);
         }
 
-
-        function mostrarEventoRaro(res, callback) {
-
-
-            const overlay = document.createElement("div");
-            overlay.classList.add("rareOverlay");
-
-
-            overlay.innerText = `${res.nome}\n\n${res.descricao}`;
-
-
-            document.body.appendChild(overlay);
-
-
-            setTimeout(() => {
-                overlay.classList.add("fadeOut");
-
-
+        document.getElementById("centerOrb").onclick = () => {
+            const orbesNaoAbertas = document.querySelectorAll(".orb:not(.opened)");
+            orbesNaoAbertas.forEach((orb, i) => {
                 setTimeout(() => {
-                    overlay.remove();
-                    callback();
-                }, 800);
+                    const idx = orb.dataset.index;
+                    revelarOrb(orb, resultados[idx]);
+                }, i * 300); 
+            });
+        };
 
+        function mostrarResultadosFinais() {
+            resFinalBox.innerHTML = "<h3>Histórico da Extração (Clique para reler):</h3>";
+            resFinalBox.style.display = "block";
 
-            }, 1500);
+            resultados.forEach(res => {
+                const p = document.createElement("p");
+                p.innerText = `[${res.raridade}★] ${res.nome}`;
+                
+                p.onclick = () => {
+                    descricaoBox.innerText = `${res.nome}: "${res.descricao}"`;
+                    descricaoBox.style.opacity = 1;
+                };
+
+                resFinalBox.appendChild(p);
+            });
         }
-
-
-     function mostrarResultadosFinais() {
-              const box = document.getElementById("resultadoFinal");
-                   box.innerHTML = "<h3>Resultados (Clique para ler a frase):</h3>"; 
-              box.style.opacity = "1";
-
-    const nomesUnicos = [...new Set(resultados.map(r => r.nome))];
-
-    nomesUnicos.forEach(nome => {
-        const p = document.createElement("p");
-        p.innerText = nome;
-        p.style.cursor = "pointer";
-        p.style.margin = "5px 0";
-        p.style.textDecoration = "underline"; 
-
-        p.onclick = () => {
-            const personagem = pool.find(person => person.nome === nome);
-            if (personagem) {
-                descricaoBox.innerText = `${personagem.nome} — ${personagem.descricao}`;
-                descricaoBox.classList.remove("fade");
-                void descricaoBox.offsetWidth;
-                descricaoBox.classList.add("fade");
-            }
-        };
-
-        box.appendChild(p);
-    });
-}
-
-
-        document.getElementById("backBtn").onclick = () => {
-            window.location.href = "index.html";
-        };
     </script>
-
-
 </body>
 </html>
-
-</body>
-</html>
-
