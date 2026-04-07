@@ -1,6 +1,4 @@
 function gerarPull(qtd) {
-
-
     const pool = [
 
         {
@@ -139,18 +137,29 @@ function gerarPull(qtd) {
     
     const resultados = [];
 
+    const raridade3 = pool.filter(p => p.raridade === 3);
+      const raridade2 = pool.filter(p => p.raridade === 2);
+        const raridade1 = pool.filter(p => p.raridade === 1);
 
-    for (let i = 0; i < qtd; i++) {
-        let roll = Math.random();
+for (let i = 0; i < qtd; i++) { 
+    let roll = Math.random();
+    let selecionado; 
 
+if (roll < 0.05) {
+            selecionado = raridade3[Math.floor(Math.random() * raridade3.length)];
+        } 
+        else if (roll < 0.30) { 
+            selecionado = raridade2[Math.floor(Math.random() * raridade2.length)];
+        } 
+        else { 
+            selecionado = raridade1[Math.floor(Math.random() * raridade1.length)];
+        }
 
-        if (roll < 0.05)
-            resultados.push(pool[0]);
-        else if (roll < 0.30)
-            resultados.push(pool[1]);
-        else
-            resultados.push(pool[2]);
+        if (!selecionado) {
+            selecionado = pool[Math.floor(Math.random() * pool.length)];
+        }
+
+        resultados.push(selecionado);
     }
 
     return resultados;
-}
