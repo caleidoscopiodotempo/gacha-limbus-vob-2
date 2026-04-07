@@ -205,145 +205,152 @@
     </div>
 
     <script>
-        const resultados = JSON.parse(localStorage.getItem("pullResults")) || [];
-        const wrapper = document.getElementById("orbsWrapper");
-        const descricaoBox = document.getElementById("descricaoBox");
-        const nomeIdTxt = document.getElementById("id-nome");
-        const corpoTextoTxt = document.getElementById("id-texto");
+const resultados = JSON.parse(localStorage.getItem("pullResults")) || [];
+const wrapper = document.getElementById("orbsWrapper");
+const descricaoBox = document.getElementById("descricaoBox");
+const nomeIdTxt = document.getElementById("id-nome");
+const corpoTextoTxt = document.getElementById("id-texto");
+
+let filaDestaques = []; 
+let filaDescricoesSimples = [];
+let exibindoDestaqueNoMomento = false;
+let mostrandoDescricaoSimples = false;
+let timeoutDestaque;
+
+resultados.forEach((res, index) => {
+    const orb = document.createElement("div");
+    orb.className = "orb";
+    orb.dataset.index = index;
+    orb.innerText = "?";
+    
+    const angle = (index / resultados.length) * (Math.PI * 2);
+    const radius = 180;
+    const x = Math.cos(angle) * radius;
+    const y = Math.sin(angle) * radius;
+    
+    orb.style.left = `calc(50% + ${x}px - 37.5px)`;
+    orb.style.top = `calc(50% + ${y}px - 37.5px)`;
+    
+    orb.onclick = function() { abrirUma(this, res); };
+    wrapper.appendChild(orb);
+});
+
+function abrirUma(elemento, personagem) {
+    if (elemento.classList.contains("opened")) return;
+    elemento.classList.add("opened");
+    
+    let rotulo = personagem.raridade === 3 ? "000" : (personagem.raridade === 2 ? "00" : "0");
+    elemento.classList.add(`raridade-${personagem.raridade}`);
+    elemento.innerText = rotulo;
+
+    if (personagem.raridade >= 2) {
+
+        filaDestaques.push(personagem);
+        processarFilaDestaques();
+    } else {
+        filaDescricoesSimples.push(personagem);
+        if (!mostrandoDescricaoSimples && !exibindoDestaqueNoMomento) processarProximaFraseSimples();
+    }
+
+    if (document.querySelectorAll(".opened").length === resultados.length) {
+
+        verificarFimDeGacha();
+    }
+}
+
+function processarFilaDestaques() {
+    if (exibindoDestaqueNoMomento || filaDestaques.length === 0) return;
+
+    exibindoDestaqueNoMomento = true;
+    const p = filaDestaques.shift();
+    
+    const overlay = document.getElementById("special-overlay");
+    const oNome = document.getElementById("overlay-nome");
+    const oTexto = document.getElementById("overlay-texto");
+
+    overlay.className = ""; 
+    let rColor = p.raridade === 3 ? "gold" : "#ff4444";
+    overlay.classList.add(p.raridade === 3 ? "overlay-r3" : "overlay-r2");
+
+    oNome.innerText = p.nome;
+    oNome.style.color = rColor;
+    oTexto.innerText = p.descricao;
+    overlay.style.display = "flex";
+
+    const fechar = () => {
+        clearTimeout(timeoutDestaque);
+        overlay.style.display = "none";
+        exibindoDestaqueNoMomento = false;
         
-        let filaResultados = [];
-        let mostrandoDescricao = false;
-        let timeoutDestaque;
+        setTimeout(() => {
+            processarFilaDestaques();
+            if (filaDestaques.length === 0) verificarFimDeGacha();
+        }, 500);
+    };
 
-        const radius = 180;
-        resultados.forEach((res, index) => {
-            const orb = document.createElement("div");
-            orb.className = "orb";
-            orb.dataset.index = index;
-            orb.innerText = "?";
-            
-            const angle = (index / resultados.length) * (Math.PI * 2);
-            const x = Math.cos(angle) * radius;
-            const y = Math.sin(angle) * radius;
-            
-            orb.style.left = `calc(50% + ${x}px - 37.5px)`;
-            orb.style.top = `calc(50% + ${y}px - 37.5px)`;
-            
-            orb.onclick = function() { abrirUma(this, res); };
-            wrapper.appendChild(orb);
-        });
+    overlay.onclick = fechar;
 
-        function abrirUma(elemento, personagem) {
-            if (elemento.classList.contains("opened")) return;
-            elemento.classList.add("opened");
-            
-            let rotulo = personagem.raridade === 3 ? "000" : (personagem.raridade === 2 ? "00" : "0");
-            elemento.classList.add(`raridade-${personagem.raridade}`);
-            elemento.innerText = rotulo;
+    let tempo = p.raridade === 3 ? 15000 : 10000;
+    timeoutDestaque = setTimeout(fechar, tempo);
+}
 
+function processarProximaFraseSimples() {
+    if (filaDescricoesSimples.length === 0 || exibindoDestaqueNoMomento) {
+        mostrandoDescricaoSimples = false;
+        return;
+    }
+    mostrandoDescricaoSimples = true;
+    const p = filaDescricoesSimples.shift();
+    
+    descricaoBox.style.opacity = 0;
+    setTimeout(() => {
+        nomeIdTxt.innerText = p.nome;
+        corpoTextoTxt.innerText = p.descricao;
+        descricaoBox.style.opacity = 1;
+        setTimeout(processarProximaFraseSimples, 8000); 
+    }, 500);
+}
 
-            if (personagem.raridade >= 2) {
-                exibirDestaqueEspecial(personagem);
-            } else if (resultados.length === 1) {
+function verificarFimDeGacha() {
+    if (document.querySelectorAll(".opened").length === resultados.length && 
+        filaDestaques.length === 0 && !exibindoDestaqueNoMomento) {
+        setTimeout(montarListaFinal, 2000);
+    }
+}
 
-                filaResultados.push(personagem);
-                if (!mostrandoDescricao) processarProximaFrase();
-            }
+function montarListaFinal() {
+    const finalOverlay = document.getElementById("final-screen-overlay");
+    const grid = document.getElementById("final-grid");
+    grid.innerHTML = "";
 
-            if (document.querySelectorAll(".opened").length === resultados.length) {
-                setTimeout(montarListaFinal, 2000);
-            }
-        }
+    resultados.forEach((res, i) => {
+        const card = document.createElement("div");
+        let rClass = res.raridade === 3 ? "card-r3" : (res.raridade === 2 ? "card-r2" : "card-r1");
+        let rLabel = res.raridade === 3 ? "000" : (res.raridade === 2 ? "00" : "0");
 
-        function exibirDestaqueEspecial(p) {
-            const overlay = document.getElementById("special-overlay");
-            const oNome = document.getElementById("overlay-nome");
-            const oTexto = document.getElementById("overlay-texto");
-
-            overlay.className = ""; 
-            let rColor = "#888";
-            let tempoExibicao = 8000; 
-
-            if (p.raridade === 3) { 
-                overlay.classList.add("overlay-r3"); 
-                rColor = "gold";
-                tempoExibicao = 12000; 
-            } 
-            else if (p.raridade === 2) { 
-                overlay.classList.add("overlay-r2"); 
-                rColor = "#ff4444"; 
-                tempoExibicao = 8000;
-            }
-
-            oNome.innerText = p.nome;
-            oNome.style.color = rColor;
-            oTexto.innerText = p.descricao;
-            overlay.style.display = "flex";
-
-            const fechar = () => {
-                clearTimeout(timeoutDestaque);
-                overlay.style.display = "none";
-                if (filaResultados.length > 0 && !mostrandoDescricao) processarProximaFrase();
-            };
-
-            overlay.onclick = fechar;
-            timeoutDestaque = setTimeout(fechar, tempoExibicao);
-        }
-
-        function processarProximaFrase() {
-            if (filaResultados.length === 0) {
-                mostrandoDescricao = false;
-                return;
-            }
-            mostrandoDescricao = true;
-            const p = filaResultados.shift();
-            
-            descricaoBox.style.opacity = 0;
-            setTimeout(() => {
-                nomeIdTxt.innerText = p.nome;
-                corpoTextoTxt.innerText = p.descricao;
-                descricaoBox.style.opacity = 1;
-                // Tempo de leitura aumentado para 8 segundos
-                setTimeout(processarProximaFrase, 8000); 
-            }, 500);
-        }
-
-        function montarListaFinal() {
-            const finalOverlay = document.getElementById("final-screen-overlay");
-            const grid = document.getElementById("final-grid");
-            grid.innerHTML = "";
-
-            resultados.forEach((res, i) => {
-                const card = document.createElement("div");
-                let rClass = res.raridade === 3 ? "card-r3" : (res.raridade === 2 ? "card-r2" : "card-r1");
-                let rLabel = res.raridade === 3 ? "000" : (res.raridade === 2 ? "00" : "0");
-
-                card.className = `id-card ${rClass}`;
-                card.style.animationDelay = `${i * 0.1}s`;
-                card.innerHTML = `
-                    <span class="card-rarity-label">${rLabel}</span>
-                    <span class="card-name-label">${res.nome}</span>
-                `;
-                
-                card.onclick = () => {
-                    exibirDestaqueEspecial(res);
-                };
-
-                grid.appendChild(card);
-            });
-            finalOverlay.style.display = "flex";
-        }
-
-        document.getElementById("centerOrb").onclick = function() {
-            this.style.display = "none";
-            const todas = document.querySelectorAll(".orb:not(.opened)");
-            todas.forEach((orb, i) => {
-                setTimeout(() => {
-                    const idx = orb.dataset.index;
-                    abrirUma(orb, resultados[idx]);
-                }, i * 200);
-            });
+        card.className = `id-card ${rClass}`;
+        card.style.animationDelay = `${i * 0.1}s`;
+        card.innerHTML = `<span class="card-rarity-label">${rLabel}</span><span>${res.nome}</span>`;
+        
+        card.onclick = () => {
+            filaDestaques.push(res);
+            processarFilaDestaques();
         };
+
+        grid.appendChild(card);
+    });
+    finalOverlay.style.display = "flex";
+}
+
+document.getElementById("centerOrb").onclick = function() {
+    this.style.display = "none";
+    const todas = document.querySelectorAll(".orb:not(.opened)");
+    todas.forEach((orb, i) => {
+        setTimeout(() => {
+            const idx = orb.dataset.index;
+            abrirUma(orb, resultados[idx]);
+        }, i * 300); 
+    };
     </script>
 </body>
 </html>
