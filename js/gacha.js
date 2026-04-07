@@ -130,13 +130,10 @@ function gerarPull(qtd) {
 
 
 {
-    nome: "Tingtang Gang Enforcer Jonas & Lucas",
+    nome: "Tingtang Gang Member Jonas & Lucas",
     raridade: 2,
     descricao: "—Você fala.\n—Eu resolvo.\n—Simples assim. Se você me atrapalhar de novo, você vai torcer para que eu não te encontre."
 },
-
-
-function gerarPull(qtd) {
 
     ]
     const resultados = [];
