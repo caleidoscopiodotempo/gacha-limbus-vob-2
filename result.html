@@ -2,33 +2,100 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Jiheisen Co. - Extração</title>
+    <title>gacha results !!</title>
     <link rel="stylesheet" href="style.css">
+    
     <style>
-        #resultadoFinal p {
+
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        #gacha-container {
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        #descricaoBox {
+            min-height: 60px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(30, 30, 30, 0.9);
+            border-left: 4px solid #ffcc00;
+            font-style: italic;
+            font-size: 1.1rem;
+            transition: opacity 0.5s;
+        }
+
+        .orbs-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .orb {
+            aspect-ratio: 1 / 1;
+            background: #2a2a2a;
+            border: 2px solid #444;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            transition: 0.2s;
-            margin: 8px 0;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .orb:hover { border-color: #888; transform: scale(1.05); }
+        .orb.opened { background: #000; border-color: #ffcc00; color: #ffcc00; box-shadow: 0 0 10px #ffcc00; }
+
+        button {
+            background: #1a1a1a;
+            color: white;
+            border: 1px solid #ffcc00;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover { background: #ffcc00; color: black; }
+
+        #resultadoFinal {
+            margin-top: 20px;
+            text-align: left;
+            border-top: 1px solid #333;
+            padding-top: 15px;
+        }
+
+        .item-clicavel {
             padding: 5px;
-            border-radius: 4px;
+            cursor: pointer;
+            color: #aaa;
+            border-bottom: 1px solid #222;
         }
-        #resultadoFinal p:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: #ffcc00; 
-        }
-        .opened {
-            filter: grayscale(100%);
-            opacity: 0.7;
-            transform: scale(0.9);
-        }
+
+        .item-clicavel:hover { color: white; background: #222; }
     </style>
 </head>
 <body>
 
     <div id="gacha-container">
-        <div id="descricaoBox" class="fade">Bem-vindo, Gerente. Clique nas orbes para revelar as IDs.</div>
+        <div id="descricaoBox" style="opacity: 0;"></div>
 
-        <div id="orbsContainer"></div>
+        <div class="orbs-grid" id="orbsContainer"></div>
 
         <button id="centerOrb">REVELAR TUDO</button>
 
@@ -38,8 +105,9 @@
     </div>
 
     <script src="js/gacha.js"></script>
+
     <script>
-        let resultados = JSON.parse(localStorage.getItem("pullResults")) || [];
+        const resultados = JSON.parse(localStorage.getItem("pullResults")) || [];
         const container = document.getElementById("orbsContainer");
         const descricaoBox = document.getElementById("descricaoBox");
         const resFinalBox = document.getElementById("resultadoFinal");
@@ -51,73 +119,65 @@
             const orb = document.createElement("div");
             orb.className = "orb";
             orb.dataset.index = index;
-            orb.innerText = "?"; 
-            
-            orb.onclick = () => revelarOrb(orb, res);
+            orb.innerText = "?";
+            orb.onclick = function() { abrirUma(this, res); };
             container.appendChild(orb);
         });
 
-        function revelarOrb(orb, res) {
-            if (orb.classList.contains("opened")) return;
+        function abrirUma(elemento, personagem) {
+            if (elemento.classList.contains("opened")) return;
 
-            orb.classList.add("opened");
-            orb.innerText = res.raridade + "★"; 
+            elemento.classList.add("opened");
+            elemento.innerText = personagem.raridade + "★";
             
-            filaDescricoes.push(`${res.nome}: "${res.descricao}"`);
+            filaDescricoes.push(`[${personagem.nome}]: ${personagem.descricao}`);
             
             if (!mostrandoDescricao) {
-                processarFila();
+                processarProximaFrase();
             }
 
-            const abertas = document.querySelectorAll(".opened").length;
-            if (abertas === resultados.length) {
-                setTimeout(mostrarResultadosFinais, 1000);
+            if (document.querySelectorAll(".opened").length === resultados.length) {
+                montarListaFinal();
             }
         }
 
-        function processarFila() {
+        function processarProximaFrase() {
             if (filaDescricoes.length === 0) {
                 mostrandoDescricao = false;
                 return;
             }
 
             mostrandoDescricao = true;
-            const texto = filaDescricoes.shift();
-
-            // Efeito de Fade Out e In
             descricaoBox.style.opacity = 0;
-            
+
             setTimeout(() => {
-                descricaoBox.innerText = texto;
+                descricaoBox.innerText = filaDescricoes.shift();
                 descricaoBox.style.opacity = 1;
                 
-                setTimeout(processarFila, 5000); 
+                setTimeout(processarProximaFrase, 5000);
             }, 500);
         }
 
-        document.getElementById("centerOrb").onclick = () => {
-            const orbesNaoAbertas = document.querySelectorAll(".orb:not(.opened)");
-            orbesNaoAbertas.forEach((orb, i) => {
+        document.getElementById("centerOrb").onclick = function() {
+            const todas = document.querySelectorAll(".orb:not(.opened)");
+            todas.forEach((orb, i) => {
                 setTimeout(() => {
                     const idx = orb.dataset.index;
-                    revelarOrb(orb, resultados[idx]);
-                }, i * 300); 
+                    abrirUma(orb, resultados[idx]);
+                }, i * 200);
             });
         };
 
-        function mostrarResultadosFinais() {
-            resFinalBox.innerHTML = "<h3>Histórico da Extração (Clique para reler):</h3>";
-            resFinalBox.style.display = "block";
-
+        function montarListaFinal() {
+            resFinalBox.innerHTML = "<h3>Histórico (Clique para reler):</h3>";
             resultados.forEach(res => {
                 const p = document.createElement("p");
-                p.innerText = `[${res.raridade}★] ${res.nome}`;
-                
+                p.className = "item-clicavel";
+                p.innerText = `${res.nome}`;
                 p.onclick = () => {
-                    descricaoBox.innerText = `${res.nome}: "${res.descricao}"`;
+                    descricaoBox.innerText = `[${res.nome}]: ${res.descricao}`;
                     descricaoBox.style.opacity = 1;
                 };
-
                 resFinalBox.appendChild(p);
             });
         }
