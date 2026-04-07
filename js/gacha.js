@@ -144,9 +144,3 @@ function gerarPull(qtd) {
     }
     return resultados;
 }
-
-        if (!selecionado) selecionado = pool[0];
-        resultados.push(selecionado);
-    }
-    return resultados;
-}
